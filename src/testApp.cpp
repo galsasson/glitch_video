@@ -7,7 +7,7 @@ void testApp::setup(){
     setupGui();
     
 //    videoPlayer.loadMovie("sunrise_static.mp4");
-    videoPlayer.loadMovie("different_pulses.mp4");
+    videoPlayer.loadMovie("videos/different_pulses.mp4");
     videoPlayer.play();
     setupDim = true;
     
