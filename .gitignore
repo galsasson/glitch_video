@@ -1,2 +1,4 @@
 bin/data/videos
+bin/glitch_videoDebug.app
+bin/glitch_videoRelease.app
 
