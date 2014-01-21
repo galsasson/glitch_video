@@ -6,8 +6,9 @@ void testApp::setup(){
     
     setupGui();
     
-//    videoPlayer.loadMovie("sunrise_static.mp4");
+//    videoPlayer.loadMovie("videos/sunrise_static.mp4");
     videoPlayer.loadMovie("videos/different_pulses.mp4");
+//    videoPlayer.loadMovie("videos/xx.mp4");
     videoPlayer.play();
     setupDim = true;
     
@@ -47,6 +48,7 @@ void testApp::update(){
         particles[i]->pos.set(fParticles[i]->x*scaleFactor, fParticles[i]->y*scaleFactor, 0);
         particles[i]->update();
         particles[i]->fillVertices(verts, parPhysSize);
+        noiseT += 0.01;
     }
     
     vbo.setVertexData(&verts[0], verts.size(), GL_STATIC_DRAW);
@@ -67,14 +69,13 @@ void testApp::draw()
             if (videoPlayer.getTexture()) {
                 videoPlayer.getTexture()->bind();
             }
-            
-            ofClear(0);
-//            ofEnableAlphaBlending();
+            ofEnableAlphaBlending();
+            ofSetColor(0, 0, 0, 255 - 255*trailStrength);
+            ofRect(0, 0, ofGetWidth(), ofGetHeight());
             glDisable(GL_DEPTH_TEST);
-            //            ofBackground(0, 0, 0, 10);
-            //            ofSetColor(255, 255, 255, 255);
-            ofEnableBlendMode(OF_BLENDMODE_ADD);
-            ofSetColor(255, 255, 255, parAlpha);
+            if (bUseAddMode) {
+                ofEnableBlendMode(OF_BLENDMODE_ADD);
+            }
 
             vbo.drawElements(GL_TRIANGLES, particles.size()*6);
             
@@ -89,26 +90,29 @@ void testApp::draw()
         blurHor.begin();
         shad_blurX.begin();
         shad_blurX.setUniform1f("blurAmnt", blurAmount);
+        shad_blurX.setUniform1f("blurAlpha", blurAlpha);
         
         ofClear(0);
         initialFbo.draw(0, 0);
+        
         
         shad_blurX.end();
         blurHor.end();
         
 //        blurVer.begin();
+        ofClear(0);
+//        initialFbo.draw(0, 0);
         shad_blurY.begin();
         shad_blurY.setUniform1f("blurAmnt", blurAmount);
+        shad_blurX.setUniform1f("blurAlpha", blurAlpha);
         
-        ofClear(0);
         blurHor.draw(0, 0);
         
         shad_blurY.end();
 //        blurVer.end();
-    
-//        ofEnableBlendMode(OF_BLENDMODE_ADD);
-//        initialFbo.draw(0, 0);
+        
 //        blurVer.draw(0, 0);
+        
     }
     
     
@@ -128,8 +132,6 @@ void testApp::keyPressed(int key){
         case 'p':
         {
             if (!isReshaping) {
-                prevBlurAmount = blurAmount;
-                blurAmount = 0;
                 isReshaping = true;
             }
             break;
@@ -145,7 +147,6 @@ void testApp::keyReleased(int key){
     {
         case 'p':
             isReshaping = false;
-            blurAmount = prevBlurAmount;
             break;
         default:
             break;
@@ -164,16 +165,10 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-    for (int i=0; i<particles.size(); i++)
-    {
-//        if (ofRandom(1) < 0.5) {
-            particles[i]->applyForce(ofVec3f(ofRandom(-15, 15), ofRandom(-15, 15), ofRandom(-1, 1)));
-            //            ofVec3f f = ofVec3f(particles[i]->pos.x - ofGetMouseX(),
-            //                            particles[i]->pos.y - ofGetMouseY(),
-            //                            0);
-            //            particles[i]->applyForce(f/10000);
-//        }
-    }
+//    for (int i=0; i<particles.size(); i++)
+//    {
+//        particles[i]->applyForce(ofVec3f(ofRandom(-15, 15), ofRandom(-15, 15), ofRandom(-1, 1)));
+//    }
 }
 
 //--------------------------------------------------------------
@@ -213,8 +208,17 @@ void testApp::newDimensions(ofVec2f newDim)
     cout<<"dimensions: "<<videoDim<<endl;
     
     blurHor.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    blurHor.begin();
+    ofClear(0);
+    blurHor.end();
     blurVer.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    blurVer.begin();
+    ofClear(0);
+    blurVer.end();
     initialFbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    initialFbo.begin();
+    ofClear(0);
+    initialFbo.end();
     initVideoParticles();
     
     hasContent = true;
@@ -263,8 +267,14 @@ void testApp::setupGui()
     gui->addSlider("Particle Size", 0, 50, &parPhysSize);
     blurAmount = 0;
     gui->addSlider("Blur Amount", 0, 10, &blurAmount);
+    blurAlpha = 1;
+    gui->addSlider("Blur Alpha", 0, 1, &blurAlpha);
     parAlpha = 255;
     gui->addSlider("Particle Alpha", 0, 255, &parAlpha);
+    trailStrength = 0;
+    gui->addSlider("Trail Strength", 0, 1, &trailStrength);
+    bUseAddMode = false;
+    gui->addToggle("Add Mode", &bUseAddMode);
     
     gui->addSpacer();
     gui->addLabel("Fluid");

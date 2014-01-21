@@ -1,22 +1,37 @@
 <Widget>
     <Kind>44</Kind>
     <Name>Particle Chunk</Name>
-    <Value>6</Value>
+    <Value>10</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Particle Size</Name>
-    <Value>15.364583015</Value>
+    <Value>14.322916985</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Blur Amount</Name>
-    <Value>1.770833254</Value>
+    <Value>1.927083254</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Blur Alpha</Name>
+    <Value>1.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Particle Alpha</Name>
-    <Value>255.000000000</Value>
+    <Value>46.484375000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Trail Strength</Name>
+    <Value>0.552083313</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Add Mode</Name>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

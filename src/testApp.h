@@ -43,11 +43,14 @@ private:
     void initVideoParticles();
     vector<VideoParticle*> particles;
     ofVbo vbo;
+    float noiseT = 0;
+    float trailStrength;
+    bool bUseAddMode;
     
     ofMutex drawMut;
     
     // blur
-    float blurAmount, prevBlurAmount;
+    float blurAmount, blurAlpha;
     ofShader shad_blurX, shad_blurY;
     ofFbo initialFbo, blurHor, blurVer;
 

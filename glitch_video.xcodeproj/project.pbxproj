@@ -217,6 +217,7 @@
 		2A5712D3188CF28C00725E8E /* ofxMPMObstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMPMObstacle.h; sourceTree = "<group>"; };
 		2A5712D4188CF28C00725E8E /* ofxMPMParticle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMPMParticle.cpp; sourceTree = "<group>"; };
 		2A5712D5188CF28C00725E8E /* ofxMPMParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMPMParticle.h; sourceTree = "<group>"; };
+		2A5712E0188E58C000725E8E /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = bin/data; sourceTree = "<group>"; };
 		2cef666c08a2de98df95a12f02f7809c /* MonoToStereoPanner.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MonoToStereoPanner.h; path = ../../../addons/ofxTonic/src/Tonic/MonoToStereoPanner.h; sourceTree = SOURCE_ROOT; };
 		2d394124f88f348aa4142dcfb64b4bd1 /* ofxUIImageToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIImageToggle.h; path = ../../../addons/ofxUI/src/ofxUIImageToggle.h; sourceTree = SOURCE_ROOT; };
 		2d9cbfad8f8687ea9e43b832140517d3 /* FilterUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = FilterUtils.cpp; path = ../../../addons/ofxTonic/src/Tonic/FilterUtils.cpp; sourceTree = SOURCE_ROOT; };
@@ -858,6 +859,9 @@
 		BBAB23C913894ECA00AA2426 /* system frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2A409AEC18862A040037D990 /* AVFoundation.framework */,
+				2A409AEA188629F90037D990 /* QuartzCore.framework */,
+				2A409AE8188629E00037D990 /* CoreMedia.framework */,
 				E7F985F515E0DE99003869B5 /* Accelerate.framework */,
 				E4C2424410CC5A17004149E2 /* AppKit.framework */,
 				E4C2424510CC5A17004149E2 /* Cocoa.framework */,
@@ -905,9 +909,6 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
-				2A409AEC18862A040037D990 /* AVFoundation.framework */,
-				2A409AEA188629F90037D990 /* QuartzCore.framework */,
-				2A409AE8188629E00037D990 /* CoreMedia.framework */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
@@ -915,6 +916,7 @@
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
 				E4B69B5B0A3A1756003C02F2 /* glitch_videoDebug.app */,
+				2A5712E0188E58C000725E8E /* data */,
 			);
 			sourceTree = "<group>";
 		};
