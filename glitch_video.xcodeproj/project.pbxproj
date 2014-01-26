@@ -34,6 +34,7 @@
 		2A5712D9188CF28C00725E8E /* ofxMPMNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5712D0188CF28C00725E8E /* ofxMPMNode.cpp */; };
 		2A5712DA188CF28C00725E8E /* ofxMPMObstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5712D2188CF28C00725E8E /* ofxMPMObstacle.cpp */; };
 		2A5712DB188CF28C00725E8E /* ofxMPMParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5712D4188CF28C00725E8E /* ofxMPMParticle.cpp */; };
+		2ABC1365189223C60068C044 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2ABC1363189223C60068C044 /* ParticleSystem.cpp */; };
 		2a5d09413fd64eb3af88ef02ff6a5449 /* b2GearJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930eb8baaa6a962411ec197db54eb10b /* b2GearJoint.cpp */; };
 		2ce855fa9be7ac5bb1024308c8f8eefa /* RingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = fd28e2d7f19057d05148e286402fa7cd /* RingBuffer.cpp */; };
 		2f666321514a2075b12ce4ee4229693d /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = e5922cf5578d5431f2ab941d1d16a7a0 /* b2CollideCircle.cpp */; };
@@ -218,6 +219,8 @@
 		2A5712D4188CF28C00725E8E /* ofxMPMParticle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMPMParticle.cpp; sourceTree = "<group>"; };
 		2A5712D5188CF28C00725E8E /* ofxMPMParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMPMParticle.h; sourceTree = "<group>"; };
 		2A5712E0188E58C000725E8E /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = bin/data; sourceTree = "<group>"; };
+		2ABC1363189223C60068C044 /* ParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleSystem.cpp; sourceTree = "<group>"; };
+		2ABC1364189223C60068C044 /* ParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleSystem.h; sourceTree = "<group>"; };
 		2cef666c08a2de98df95a12f02f7809c /* MonoToStereoPanner.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MonoToStereoPanner.h; path = ../../../addons/ofxTonic/src/Tonic/MonoToStereoPanner.h; sourceTree = SOURCE_ROOT; };
 		2d394124f88f348aa4142dcfb64b4bd1 /* ofxUIImageToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIImageToggle.h; path = ../../../addons/ofxUI/src/ofxUIImageToggle.h; sourceTree = SOURCE_ROOT; };
 		2d9cbfad8f8687ea9e43b832140517d3 /* FilterUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = FilterUtils.cpp; path = ../../../addons/ofxTonic/src/Tonic/FilterUtils.cpp; sourceTree = SOURCE_ROOT; };
@@ -928,6 +931,8 @@
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				2A409AEE18864B320037D990 /* VideoParticle.cpp */,
 				2A409AEF18864B320037D990 /* VideoParticle.h */,
+				2ABC1363189223C60068C044 /* ParticleSystem.cpp */,
+				2ABC1364189223C60068C044 /* ParticleSystem.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1255,6 +1260,7 @@
 				2A5712DA188CF28C00725E8E /* ofxMPMObstacle.cpp in Sources */,
 				613570c868c725d3793f33d987df85f4 /* Mixer.cpp in Sources */,
 				ccf589c179c92c095ba6ee9d097fa22c /* MonoToStereoPanner.cpp in Sources */,
+				2ABC1365189223C60068C044 /* ParticleSystem.cpp in Sources */,
 				af105c709e912c65638f8cacb0239fa6 /* Noise.cpp in Sources */,
 				6bbc287ab24a076787c8313563e29dfe /* RampedValue.cpp in Sources */,
 				fb0cec2120b7ecc76ca7681fb5a9c4e5 /* RectWave.cpp in Sources */,

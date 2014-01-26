@@ -5,6 +5,7 @@
 #include "VideoParticle.h"
 #include "ofxUI.h"
 #include "ofxMPMFluid.h"
+#include "ParticleSystem.h"
 
 class testApp : public ofBaseApp{
 
@@ -25,45 +26,8 @@ class testApp : public ofBaseApp{
     
     void exit();
 
-    bool hasContent;
 
 private:
-
-    ofxUICanvas *gui;
-    void setupGui();
-    
-    ofxAVFVideoPlayer videoPlayer;
-    ofVec2f videoDim;
-    bool setupDim;
-    void newDimensions(ofVec2f newDim);
-    
-    int parChunk;
-    float parPhysSize;
-    float parAlpha;
-    void initVideoParticles();
-    vector<VideoParticle*> particles;
-    ofVbo vbo;
-    float noiseT = 0;
-    float trailStrength;
-    bool bUseAddMode;
-    
-    ofMutex drawMut;
-    
-    // blur
-    float blurAmount, blurAlpha;
-    ofShader shad_blurX, shad_blurY;
-    ofFbo initialFbo, blurHor, blurVer;
-
-    // fluid
-    bool isReshaping;
-    void updateFluid();
-    ofxMPMFluid fluid;
-    float density;
-    float stiffness;
-    float bulkViscosity;
-    float elasticity;
-    float viscosity;
-    float gravity;
-    float scaleFactor;
-
+    ParticleSystem ps;
+ 
 };

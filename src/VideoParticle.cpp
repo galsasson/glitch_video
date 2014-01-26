@@ -17,13 +17,22 @@ VideoParticle::VideoParticle(int _id, float x, float y, float z, float s)
     halfSize = s/2;
 }
 
-unsigned int VideoParticle::fillVertices(vector<ofVec3f> &verts, float s)
+unsigned int VideoParticle::fillVertices(vector<ofVec3f> &verts, float s, bool randomize)
 {
     float sdiv2 = s/2;
-    verts.push_back(pos + ofVec3f(-sdiv2, -sdiv2, 0));
-    verts.push_back(pos + ofVec3f(sdiv2, -sdiv2, 0));
-    verts.push_back(pos + ofVec3f(sdiv2, sdiv2, 0));
-    verts.push_back(pos + ofVec3f(-sdiv2, sdiv2, 0));
+    if (randomize)
+    {
+        verts.push_back(pos + ofVec3f(-sdiv2+ofRandom(s/4), -sdiv2+ofRandom(s/4), 0));
+        verts.push_back(pos + ofVec3f(sdiv2+ofRandom(s/4), -sdiv2+ofRandom(s/4), 0));
+        verts.push_back(pos + ofVec3f(sdiv2+ofRandom(s/4), sdiv2+ofRandom(s/4), 0));
+        verts.push_back(pos + ofVec3f(-sdiv2+ofRandom(s/4), sdiv2+ofRandom(s/4), 0));
+    }
+    else {
+        verts.push_back(pos + ofVec3f(-sdiv2, -sdiv2, 0));
+        verts.push_back(pos + ofVec3f(sdiv2, -sdiv2, 0));
+        verts.push_back(pos + ofVec3f(sdiv2, sdiv2, 0));
+        verts.push_back(pos + ofVec3f(-sdiv2, sdiv2, 0));
+    }
     return 4;
 }
 

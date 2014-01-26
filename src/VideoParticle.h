@@ -16,7 +16,7 @@ class VideoParticle
 {
 public:
     VideoParticle(int _id, float x, float y, float z, float size);
-    unsigned int fillVertices(vector<ofVec3f> &verts, float s);
+    unsigned int fillVertices(vector<ofVec3f> &verts, float s, bool randomize = false);
     unsigned int fillIndices(vector<unsigned int> &indices);
     unsigned int fillUvs(vector<ofVec2f> &uvs, ofVec2f uv);
     void fillColors(vector<ofFloatColor> &colors, ofFloatColor color);
