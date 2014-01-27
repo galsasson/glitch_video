@@ -4,13 +4,18 @@
 void testApp::setup(){
     ofSetVerticalSync(true);
     
-    ps.setup(0, 200, 0, ofGetWidth()-200, ofGetHeight(), "videos/different_pulses.mp4");
+    ps.setup(0, 200, 0, 640/*ofGetWidth()-200*/, 360/*ofGetHeight()*/, "videos/different_pulses.mp4");
+    flowInput.listen(10000);
+    ps.setFluidForces(flowInput.getForcesRef());
+//    ps2.setup(1, 300, 300, 100, 100, "videos/xx.mp4");
     
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
+    flowInput.update();
     ps.update();
+//    ps2.update();
 }
 
 //--------------------------------------------------------------
@@ -20,6 +25,7 @@ void testApp::draw()
     ofClear(0);
 
     ps.draw();
+//    ps2.draw();
     
     ofPopStyle();
 }
@@ -30,15 +36,18 @@ void testApp::keyPressed(int key){
     {
         case 'g':
             ps.toggleSettings();
+            flowInput.toggleSettings();
             break;
         case 'r':
             ps.loadSettings();
+            flowInput.loadSettings();
             break;
         case 's':
             ps.saveSettings();
+            flowInput.saveSettings();
             break;
         case 'p':
-            ps.backToPlace(true);
+            ps.backToPlace(false);
             break;
         default:
             break;
@@ -50,7 +59,7 @@ void testApp::keyReleased(int key){
     switch(key)
     {
         case 'p':
-            ps.backToPlace(false);
+            ps.backToPlace(true);
             break;
         default:
             break;

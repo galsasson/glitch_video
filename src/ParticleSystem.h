@@ -31,6 +31,9 @@ public:
     void toggleSettings();
     
     void backToPlace(bool b);
+    void resetParticles();
+    
+    void setFluidForces(vector<ofxMPMForce*>* forces);
     
     void mouseMoved();
     
@@ -69,6 +72,11 @@ private:
     
     // fluid
     bool isReshaping;
+    float reshapeForce;
+    int breakPoint;
+    int breakTime, breakCounter;
+    int cureTime, cureCounter;
+    
     ofxMPMFluid fluid;
     float density;
     float stiffness;

@@ -6,6 +6,7 @@
 #include "ofxUI.h"
 #include "ofxMPMFluid.h"
 #include "ParticleSystem.h"
+#include "FlowInput.h"
 
 class testApp : public ofBaseApp{
 
@@ -29,5 +30,6 @@ class testApp : public ofBaseApp{
 
 private:
     ParticleSystem ps;
+    FlowInput flowInput;
  
 };

@@ -16,7 +16,6 @@ ParticleSystem::~ParticleSystem()
 {
     videoPlayer.stop();
     videoPlayer.close();
-//    sleep(3);
 }
 
 void ParticleSystem::setup(int _id, float x, float y, float w, float h, string video)
@@ -39,7 +38,7 @@ void ParticleSystem::setup(int _id, float x, float y, float w, float h, string v
     shad_blurY.load("shaders/simpleBlurVertical");
     
     hasContent = false;
-    isReshaping = false;
+    isReshaping = true;
     
 }
 
@@ -63,8 +62,8 @@ void ParticleSystem::update()
         if (isReshaping)
         {
             ofVec3f force = particles[i]->getRestPosition() - (ofVec3f(fParticles[i]->x, fParticles[i]->y, 0) * ofVec3f(fluid.scaleFactor.x, fluid.scaleFactor.y, 0));
-            fParticles[i]->u = force.x/25;
-            fParticles[i]->v = force.y/25;
+            fParticles[i]->u = force.x*reshapeForce;
+            fParticles[i]->v = force.y*reshapeForce;
         }
         particles[i]->pos.set(fParticles[i]->x*fluid.scaleFactor.x, fParticles[i]->y*fluid.scaleFactor.y, 0);
         particles[i]->update();
@@ -72,7 +71,7 @@ void ParticleSystem::update()
         noiseT += 0.01;
     }
     
-    vbo.setVertexData(&verts[0], verts.size(), GL_STATIC_DRAW);    
+    vbo.setVertexData(&verts[0], verts.size(), GL_DYNAMIC_DRAW);
 }
 
 void ParticleSystem::draw()
@@ -192,20 +191,15 @@ void ParticleSystem::initVideoParticles()
     vbo.setIndexData(&indices[0], indices.size(), GL_STATIC_DRAW);
     
     cout<<"Initializing fluid["<<id<<"]: number of particles ("<<particles.size()<<")\n";
-    fluid.setup(particles.size(), 64, 36);
+    fluid.setup(particles.size(), videoDim.x/10, videoDim.y/10);
     fluid.numParticles = particles.size();
     fluid.scaleFactor.x = size.x / fluid.getGridSizeX();
     fluid.scaleFactor.y = size.y / fluid.getGridSizeY();
     
+//    fluid.forces.push_back(new ofxMPMForce(ofVec2f(0.5, 0.5), ofVec2f(0, .1)));
     
     // init particle positions to pos
-    vector<ofxMPMParticle*> par = fluid.getParticles();
-    for (int i=0; i<par.size(); i++)
-    {
-        par[i]->x = ofMap(particles[i]->pos.x, 0, size.x, 3, fluid.getGridSizeX()-3);
-        par[i]->y = ofMap(particles[i]->pos.y, 0, size.y, 3, fluid.getGridSizeY()-3);
-//        cout<<par[i]->x<<"x"<<par[i]->y<<endl;
-    }
+    resetParticles();
 }
 
 void ParticleSystem::setupGui()
@@ -228,6 +222,14 @@ void ParticleSystem::setupGui()
     gui->addSlider("Trail Strength", 0, 1, &trailStrength);
     bUseAddMode = false;
     gui->addToggle("Add Mode", &bUseAddMode);
+    reshapeForce = 0.01;
+    gui->addSlider("Reshape force", 0, 0.1, &reshapeForce);
+    breakPoint = 20;
+    gui->addIntSlider("Break point", 1, 100, &breakPoint);
+    breakTime = 100;
+    gui->addIntSlider("Break time (frames)", 1, 1000, &breakTime);
+    cureTime = 120;
+    gui->addIntSlider("Cure time (frames)", 1, 1100, &cureTime);
     
     gui->addSpacer();
     gui->addLabel("Fluid");
@@ -275,20 +277,49 @@ void ParticleSystem::updateFluid()
     fluid.elasticity = elasticity;
     fluid.gravity = gravity/10;
     
-//    float sf = size.x / fluid.getGridSizeX();
-//    if (sf > size.y / fluid.getGridSizeY()) {
-//        sf = size.y / fluid.getGridSizeY();
-//    }
     fluid.scaleFactor.x = size.x / fluid.getGridSizeX();
     fluid.scaleFactor.y = size.y / fluid.getGridSizeY();
     
     fluid.bDoMouse = true;
     fluid.update(ofGetMouseX()-pos.x, ofGetMouseY()-pos.y);
+    
+    if (fluid.forces->size() > breakPoint) {
+        isReshaping = false;
+        breakCounter = breakTime;
+        cureCounter = cureTime;
+    }
+    if (breakCounter >= 0) {
+        breakCounter--;
+        if (breakCounter==0) {
+            isReshaping = true;
+        }
+    }
+    if (cureCounter >= 0) {
+        cureCounter--;
+        if (cureCounter==0) {
+            resetParticles();
+        }
+    }
 }
 
 void ParticleSystem::backToPlace(bool b)
 {
     isReshaping = b;
+}
+
+void ParticleSystem::resetParticles()
+{
+    vector<ofxMPMParticle*> par = fluid.getParticles();
+    for (int i=0; i<par.size(); i++)
+    {
+        par[i]->x = ofMap(particles[i]->restPos.x, 0, size.x, 3, fluid.getGridSizeX()-3);
+        par[i]->y = ofMap(particles[i]->restPos.y, 0, size.y, 3, fluid.getGridSizeY()-3);
+    }
+}
+
+void ParticleSystem::setFluidForces(vector<ofxMPMForce *> *forces)
+{
+    fluid.forces = forces;
 }
 
 
