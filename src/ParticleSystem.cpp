@@ -29,7 +29,7 @@ void ParticleSystem::setup(int _id, float x, float y, float w, float h, string v
     //    videoPlayer.loadMovie("videos/sunrise_static.mp4");
     videoPlayer.loadMovie(video);
     //    videoPlayer.loadMovie("videos/xx.mp4");
-
+    videoPlayer.setLoopState(OF_LOOP_NORMAL);
     videoPlayer.play();
     setupDim = true;
     
@@ -68,7 +68,7 @@ void ParticleSystem::update()
         particles[i]->pos.set(fParticles[i]->x*fluid.scaleFactor.x, fParticles[i]->y*fluid.scaleFactor.y, 0);
         particles[i]->update();
         particles[i]->fillVertices(verts, parPhysSize);
-        noiseT += 0.01;
+//        noiseT += 0.01;
     }
     
     vbo.setVertexData(&verts[0], verts.size(), GL_DYNAMIC_DRAW);
@@ -92,7 +92,7 @@ void ParticleSystem::draw()
         }
         ofEnableAlphaBlending();
         ofSetColor(0, 0, 0, 255 - 255*trailStrength);
-        ofRect(0, 0, ofGetWidth(), ofGetHeight());
+        ofRect(0, 0, size.x, size.y);
         glDisable(GL_DEPTH_TEST);
         if (bUseAddMode) {
             ofEnableBlendMode(OF_BLENDMODE_ADD);
@@ -185,7 +185,7 @@ void ParticleSystem::initVideoParticles()
         }
     }
     
-    vbo.setVertexData(&verts[0], verts.size(), GL_STATIC_DRAW);
+    vbo.setVertexData(&verts[0], verts.size(), GL_DYNAMIC_DRAW);
     vbo.setTexCoordData(&uvs[0], uvs.size(), GL_STATIC_DRAW);
     vbo.setColorData(&colors[0], colors.size(), GL_STATIC_DRAW);
     vbo.setIndexData(&indices[0], indices.size(), GL_STATIC_DRAW);
@@ -196,9 +196,7 @@ void ParticleSystem::initVideoParticles()
     fluid.scaleFactor.x = size.x / fluid.getGridSizeX();
     fluid.scaleFactor.y = size.y / fluid.getGridSizeY();
     
-//    fluid.forces.push_back(new ofxMPMForce(ofVec2f(0.5, 0.5), ofVec2f(0, .1)));
-    
-    // init particle positions to pos
+    // init particle positions to rest
     resetParticles();
 }
 
@@ -280,8 +278,7 @@ void ParticleSystem::updateFluid()
     fluid.scaleFactor.x = size.x / fluid.getGridSizeX();
     fluid.scaleFactor.y = size.y / fluid.getGridSizeY();
     
-    fluid.bDoMouse = true;
-    fluid.update(ofGetMouseX()-pos.x, ofGetMouseY()-pos.y);
+    fluid.update();
     
     if (fluid.forces->size() > breakPoint) {
         isReshaping = false;

@@ -66,7 +66,7 @@ private:
     ofMutex drawMut;
     
     // blur
-    float blurAmount, blurAlpha;
+    float blurAmount, blurAlpha, blurVideo, blurLiquid;
     ofShader shad_blurX, shad_blurY;
     ofFbo initialFbo, blurHor, blurVer;
     

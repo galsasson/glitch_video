@@ -48,7 +48,7 @@ void FlowInput::update()
         }
     }
     
-    cout<<"forces = "<<forces.size()<<endl;
+//    cout<<"forces = "<<forces.size()<<endl;
 }
 
 vector<ofxMPMForce*>* FlowInput::getForcesRef()
@@ -58,7 +58,7 @@ vector<ofxMPMForce*>* FlowInput::getForcesRef()
 
 void FlowInput::setupGui()
 {
-    gui = new ofxUICanvas(0, ofGetHeight()-200, 200, 200);
+    gui = new ofxUICanvas(200, ofGetHeight()-200, 200, 200);
     
     gui->addWidgetDown(new ofxUILabel("FlowField Input", OFX_UI_FONT_MEDIUM));
     

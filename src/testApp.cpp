@@ -4,7 +4,8 @@
 void testApp::setup(){
     ofSetVerticalSync(true);
     
-    ps.setup(0, 200, 0, 640/*ofGetWidth()-200*/, 360/*ofGetHeight()*/, "videos/different_pulses.mp4");
+    ps.setup(0, 200, 0, 640/*ofGetWidth()-200*/, 320/*ofGetHeight()*/, "videos/different_pulses.mp4");
+//    ps.setup(0, 0, 0, 1920, 1080, "videos/innovid.mp4");
     flowInput.listen(10000);
     ps.setFluidForces(flowInput.getForcesRef());
 //    ps2.setup(1, 300, 300, 100, 100, "videos/xx.mp4");
