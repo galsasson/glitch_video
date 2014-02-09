@@ -7,7 +7,7 @@ void testApp::setup(){
 //    ps.setup(0, 200, 0, 640/*ofGetWidth()-200*/, 320/*ofGetHeight()*/, "videos/different_pulses.mp4");
     ps.setup(0, 0, 0, 1920, 1080, "videos/innovid3.mp4");
     flowInput.listen(10000);
-    ps.applyBorders("svg/test.svg");
+    ps.applyBorders("svg/innovid2.svg");
     ps.setFluidForces(flowInput.getForcesRef());
     
 //    fluidMask.setup(ps.getFluidRef());

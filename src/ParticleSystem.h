@@ -14,6 +14,7 @@
 #include "ofxMPMFluid.h"
 #include "ofxUI.h"
 #include "ofxAVFVideoPlayer.h"
+#include "ofxTween.h"
 
 #include "VideoParticle.h"
 #include "FluidMask.h"
@@ -72,7 +73,10 @@ private:
     ofMutex drawMut;
     
     // blur
-    float blurAmount, blurAlpha, blurVideo, blurLiquid;
+    float liquidBlur, blurAlpha;
+    ofxTween tweenBlur;
+    ofxEasingQuad tweenBlurEasing;
+    
     ofShader shad_blurX, shad_blurY;
     ofFbo initialFbo, blurHor, blurVer;
     
@@ -100,6 +104,7 @@ private:
     ofVec2f lineEnd;
     
     // fluid mask
+    string svgPath;
     FluidMask fluidMask;
 };
 #endif /* defined(__glitch_video__ParticleSystem__) */
