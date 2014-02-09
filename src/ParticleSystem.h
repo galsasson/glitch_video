@@ -98,14 +98,7 @@ private:
     float elasticity;
     float viscosity;
     float gravity;
-    
-    // obstacles
-    bool drawObs;
-    ofVec2f currObsCenter;
-    float currObsRad;
-    ofVec2f lineStart;
-    ofVec2f lineEnd;
-    
+        
     // fluid mask
     string svgPath;
     FluidMask fluidMask;

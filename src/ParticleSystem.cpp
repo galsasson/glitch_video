@@ -147,15 +147,6 @@ void ParticleSystem::draw()
     
     //        blurVer.draw(0, 0);
     
-    if (drawObs) {
-        ofSetColor(0, 0, 255, 100);
-        ofNoFill();
-        ofLine(lineStart, lineEnd);
-//        ofFill();
-//        ofEllipse(currObsCenter.x, currObsCenter.y, currObsRad*2, currObsRad*2);
-    }
-    
-    
     // draw fluid borders
     fluidMask.draw();
     
