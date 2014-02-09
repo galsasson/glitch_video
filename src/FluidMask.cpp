@@ -80,7 +80,7 @@ void FluidMask::createObstacles(float spacing)
             vector<ofPoint> points = resampledLine.getVertices();
             for (int v=0; v<points.size(); v++)
             {
-                cout<<"vertex at "<<points[v].x<<"x"<<points[v].y<<endl;
+//                cout<<"vertex at "<<points[v].x<<"x"<<points[v].y<<endl;
                 addObstacle(points[v].x, points[v].y, obstacleSize);
             }
         }

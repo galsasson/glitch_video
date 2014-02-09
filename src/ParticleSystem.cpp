@@ -51,7 +51,6 @@ void ParticleSystem::applyBorders(string _svgPath)
 
 void ParticleSystem::update()
 {
-    
     videoPlayer.update();
     if (videoPlayer.isFrameNew()) {
         if (setupDim) {
@@ -71,6 +70,7 @@ void ParticleSystem::update()
         {
             if (isReshaping)
             {
+                float reshapeForce = tweenReshapeForce.update();
                 ofVec3f force = particles[i]->getRestPosition() - (ofVec3f(fParticles[i]->x, fParticles[i]->y, 0) * ofVec3f(fluid.scaleFactor.x, fluid.scaleFactor.y, 0));
                 fParticles[i]->u = force.x*reshapeForce;
                 fParticles[i]->v = force.y*reshapeForce;
@@ -251,8 +251,8 @@ void ParticleSystem::setupGui()
     gui->addSlider("Trail Strength", 0, 1, &trailStrength);
     bUseAddMode = false;
     gui->addToggle("Add Mode", &bUseAddMode);
-    reshapeForce = 0.01;
-    gui->addSlider("Reshape force", 0, 0.1, &reshapeForce);
+    maxReshapeForce = 0.01;
+    gui->addSlider("Max Reshape Force", 0, 0.2, &maxReshapeForce);
     breakPoint = 20;
     gui->addIntSlider("Break point", 1, 100, &breakPoint);
     breakTime = 100;
@@ -312,9 +312,9 @@ void ParticleSystem::updateFluid()
     fluid.scaleFactor.y = size.y / fluid.getGridSizeY();
     
     
-//    fluid.bDoMouse = true;
-//    fluid.update(ofGetMouseX(), ofGetMouseY());
-    fluid.update();
+    fluid.bDoMouse = true;
+    fluid.update(ofGetMouseX(), ofGetMouseY());
+//    fluid.update();
     
     if (fluid.forces->size() > breakPoint) {
         breakFluid();
@@ -324,14 +324,12 @@ void ParticleSystem::updateFluid()
     if (breakCounter >= 0) {
         breakCounter--;
         if (breakCounter==0) {
-            isReshaping = true;
-            fluidMask.easeOut();
+            startFluidReshape();
         }
     }
     if (cureCounter >= 0) {
         cureCounter--;
         if (cureCounter==0) {
-            bDoFluid = false;
             resetParticles();
         }
     }
@@ -363,14 +361,24 @@ void ParticleSystem::breakFluid()
 
 void ParticleSystem::resetParticles()
 {
+    bDoFluid = false;
+
     vector<ofxMPMParticle*> par = fluid.getParticles();
     for (int i=0; i<par.size(); i++)
     {
         par[i]->x = ofMap(particles[i]->restPos.x, 0, size.x, 2, fluid.getGridSizeX()-3);
         par[i]->y = ofMap(particles[i]->restPos.y, 0, size.y, 2, fluid.getGridSizeY()-3);
     }
-    tweenBlur.setParameters(0, tweenBlurEasing, ofxTween::easeOut, liquidBlur, 0, 3000, 0);
+    tweenBlur.setParameters(0, tweenBlurEasing, ofxTween::easeIn, liquidBlur, 0, 3000, 0);
 }
+
+void ParticleSystem::startFluidReshape()
+{
+    isReshaping = true;
+    fluidMask.easeOut();
+    tweenReshapeForce.setParameters(0, tweenReshapeEasing, ofxTween::easeIn, 0, maxReshapeForce, 5000, 0);
+}
+
 
 void ParticleSystem::setFluidForces(vector<ofxMPMForce *> *forces)
 {

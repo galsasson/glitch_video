@@ -1,17 +1,17 @@
 <Widget>
     <Kind>44</Kind>
     <Name>Particle Chunk</Name>
-    <Value>10</Value>
+    <Value>15</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Particle Size</Name>
-    <Value>10.416666031</Value>
+    <Value>15.364583015</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Liquid Blur</Name>
-    <Value>2.500000000</Value>
+    <Value>1.614583254</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -30,8 +30,8 @@
 </Widget>
 <Widget>
     <Kind>4</Kind>
-    <Name>Reshape force</Name>
-    <Value>0.010416667</Value>
+    <Name>Max Reshape Force</Name>
+    <Value>0.152083337</Value>
 </Widget>
 <Widget>
     <Kind>44</Kind>
@@ -46,7 +46,7 @@
 <Widget>
     <Kind>44</Kind>
     <Name>Cure time (frames)</Name>
-    <Value>229</Value>
+    <Value>315</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

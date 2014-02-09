@@ -58,7 +58,7 @@ vector<ofxMPMForce*>* FlowInput::getForcesRef()
 
 void FlowInput::setupGui()
 {
-    gui = new ofxUICanvas(200, ofGetHeight()-200, 200, 200);
+    gui = new ofxUICanvas(200, 0, 200, 200);
     
     gui->addWidgetDown(new ofxUILabel("FlowField Input", OFX_UI_FONT_MEDIUM));
     

@@ -53,6 +53,7 @@ private:
     void initVideoParticles();
     void setupGui();
     void updateFluid();
+    void startFluidReshape();
 
     bool hasContent;
     
@@ -75,7 +76,7 @@ private:
     // blur
     float liquidBlur, blurAlpha;
     ofxTween tweenBlur;
-    ofxEasingQuad tweenBlurEasing;
+    ofxEasingCubic tweenBlurEasing;
     
     ofShader shad_blurX, shad_blurY;
     ofFbo initialFbo, blurHor, blurVer;
@@ -83,7 +84,9 @@ private:
     // fluid
     bool bDoFluid;
     bool isReshaping;
-    float reshapeForce;
+    float maxReshapeForce;
+    ofxTween tweenReshapeForce;
+    ofxEasingCubic tweenReshapeEasing;
     int breakPoint;
     int breakTime, breakCounter;
     int cureTime, cureCounter;
