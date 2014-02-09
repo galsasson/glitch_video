@@ -41,6 +41,11 @@
 		2A409AEB188629F90037D990 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A409AEA188629F90037D990 /* QuartzCore.framework */; };
 		2A409AED18862A040037D990 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A409AEC18862A040037D990 /* AVFoundation.framework */; };
 		2A409AF018864B320037D990 /* VideoParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A409AEE18864B320037D990 /* VideoParticle.cpp */; };
+		2A424C8418A714270015A0DC /* src_colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A424C7B18A714270015A0DC /* src_colors.cpp */; };
+		2A424C8518A714270015A0DC /* svgtiny.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A424C7C18A714270015A0DC /* svgtiny.cpp */; };
+		2A424C8618A714270015A0DC /* svgtiny_gradient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A424C7E18A714270015A0DC /* svgtiny_gradient.cpp */; };
+		2A424C8718A714270015A0DC /* svgtiny_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A424C8018A714270015A0DC /* svgtiny_list.cpp */; };
+		2A424C8818A714270015A0DC /* ofxSvg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A424C8218A714270015A0DC /* ofxSvg.cpp */; };
 		2A5712B6188CED2700725E8E /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5712AF188CED2700725E8E /* tinyxml.cpp */; };
 		2A5712B7188CED2700725E8E /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5712B1188CED2700725E8E /* tinyxmlerror.cpp */; };
 		2A5712B8188CED2700725E8E /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5712B2188CED2700725E8E /* tinyxmlparser.cpp */; };
@@ -50,6 +55,7 @@
 		2A5712DA188CF28C00725E8E /* ofxMPMObstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5712D2188CF28C00725E8E /* ofxMPMObstacle.cpp */; };
 		2A5712DB188CF28C00725E8E /* ofxMPMParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5712D4188CF28C00725E8E /* ofxMPMParticle.cpp */; };
 		2ABC1365189223C60068C044 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2ABC1363189223C60068C044 /* ParticleSystem.cpp */; };
+		2AE7B5B31899A11E00402849 /* FluidMask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AE7B5B11899A11E00402849 /* FluidMask.cpp */; };
 		2a5d09413fd64eb3af88ef02ff6a5449 /* b2GearJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930eb8baaa6a962411ec197db54eb10b /* b2GearJoint.cpp */; };
 		2ce855fa9be7ac5bb1024308c8f8eefa /* RingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = fd28e2d7f19057d05148e286402fa7cd /* RingBuffer.cpp */; };
 		2f666321514a2075b12ce4ee4229693d /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = e5922cf5578d5431f2ab941d1d16a7a0 /* b2CollideCircle.cpp */; };
@@ -256,6 +262,14 @@
 		2A409AEC18862A040037D990 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		2A409AEE18864B320037D990 /* VideoParticle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VideoParticle.cpp; sourceTree = "<group>"; };
 		2A409AEF18864B320037D990 /* VideoParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoParticle.h; sourceTree = "<group>"; };
+		2A424C7B18A714270015A0DC /* src_colors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = src_colors.cpp; sourceTree = "<group>"; };
+		2A424C7C18A714270015A0DC /* svgtiny.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny.cpp; sourceTree = "<group>"; };
+		2A424C7D18A714270015A0DC /* svgtiny.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = svgtiny.h; sourceTree = "<group>"; };
+		2A424C7E18A714270015A0DC /* svgtiny_gradient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny_gradient.cpp; sourceTree = "<group>"; };
+		2A424C7F18A714270015A0DC /* svgtiny_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = svgtiny_internal.h; sourceTree = "<group>"; };
+		2A424C8018A714270015A0DC /* svgtiny_list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny_list.cpp; sourceTree = "<group>"; };
+		2A424C8218A714270015A0DC /* ofxSvg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSvg.cpp; sourceTree = "<group>"; };
+		2A424C8318A714270015A0DC /* ofxSvg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSvg.h; sourceTree = "<group>"; };
 		2A5712AF188CED2700725E8E /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
 		2A5712B0188CED2700725E8E /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		2A5712B1188CED2700725E8E /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
@@ -273,6 +287,8 @@
 		2A5712E0188E58C000725E8E /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = bin/data; sourceTree = "<group>"; };
 		2ABC1363189223C60068C044 /* ParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleSystem.cpp; sourceTree = "<group>"; };
 		2ABC1364189223C60068C044 /* ParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleSystem.h; sourceTree = "<group>"; };
+		2AE7B5B11899A11E00402849 /* FluidMask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FluidMask.cpp; sourceTree = "<group>"; };
+		2AE7B5B21899A11E00402849 /* FluidMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FluidMask.h; sourceTree = "<group>"; };
 		2cef666c08a2de98df95a12f02f7809c /* MonoToStereoPanner.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MonoToStereoPanner.h; path = ../../../addons/ofxTonic/src/Tonic/MonoToStereoPanner.h; sourceTree = SOURCE_ROOT; };
 		2d394124f88f348aa4142dcfb64b4bd1 /* ofxUIImageToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIImageToggle.h; path = ../../../addons/ofxUI/src/ofxUIImageToggle.h; sourceTree = SOURCE_ROOT; };
 		2d9cbfad8f8687ea9e43b832140517d3 /* FilterUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = FilterUtils.cpp; path = ../../../addons/ofxTonic/src/Tonic/FilterUtils.cpp; sourceTree = SOURCE_ROOT; };
@@ -815,6 +831,54 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		2A424C7718A714270015A0DC /* ofxSvg */ = {
+			isa = PBXGroup;
+			children = (
+				2A424C7818A714270015A0DC /* libs */,
+				2A424C8118A714270015A0DC /* src */,
+			);
+			name = ofxSvg;
+			path = ../../../addons/ofxSvg;
+			sourceTree = "<group>";
+		};
+		2A424C7818A714270015A0DC /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				2A424C7918A714270015A0DC /* svgTiny */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		2A424C7918A714270015A0DC /* svgTiny */ = {
+			isa = PBXGroup;
+			children = (
+				2A424C7A18A714270015A0DC /* src */,
+			);
+			path = svgTiny;
+			sourceTree = "<group>";
+		};
+		2A424C7A18A714270015A0DC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				2A424C7B18A714270015A0DC /* src_colors.cpp */,
+				2A424C7C18A714270015A0DC /* svgtiny.cpp */,
+				2A424C7D18A714270015A0DC /* svgtiny.h */,
+				2A424C7E18A714270015A0DC /* svgtiny_gradient.cpp */,
+				2A424C7F18A714270015A0DC /* svgtiny_internal.h */,
+				2A424C8018A714270015A0DC /* svgtiny_list.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		2A424C8118A714270015A0DC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				2A424C8218A714270015A0DC /* ofxSvg.cpp */,
+				2A424C8318A714270015A0DC /* ofxSvg.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		2A5712AD188CED2700725E8E /* ofxXmlSettings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1008,6 +1072,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				2A424C7718A714270015A0DC /* ofxSvg */,
 				2A18682018959D2C0068D058 /* ofxOsc */,
 				2A5712BA188CF28B00725E8E /* ofxMPMFluid */,
 				2A5712AD188CED2700725E8E /* ofxXmlSettings */,
@@ -1095,6 +1160,8 @@
 				2ABC1364189223C60068C044 /* ParticleSystem.h */,
 				2A18681D18959CF60068D058 /* FlowInput.cpp */,
 				2A18681E18959CF60068D058 /* FlowInput.h */,
+				2AE7B5B11899A11E00402849 /* FluidMask.cpp */,
+				2AE7B5B21899A11E00402849 /* FluidMask.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1325,6 +1392,7 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
+				2A424C8618A714270015A0DC /* svgtiny_gradient.cpp in Sources */,
 				e110b2f7dd0801265dddb9dcf5212039 /* ofxAVFVideoPlayer.mm in Sources */,
 				96327463f5bf168faf29907c6e1f68e9 /* ofxAVFVideoRenderer.m in Sources */,
 				b16c89d9ca996ca8fd860d81223bd4dc /* ofxBox2d.cpp in Sources */,
@@ -1342,6 +1410,7 @@
 				2A5712DB188CF28C00725E8E /* ofxMPMParticle.cpp in Sources */,
 				19894c344a6861a26a61d2c00f240799 /* b2TimeOfImpact.cpp in Sources */,
 				da846513da696b1e8921bbc376393b74 /* b2CircleShape.cpp in Sources */,
+				2A424C8818A714270015A0DC /* ofxSvg.cpp in Sources */,
 				981ea7c2357295ae8501f4c650fd5c84 /* b2PolygonShape.cpp in Sources */,
 				bb885f5f39c8da070d80ef023898c248 /* b2BlockAllocator.cpp in Sources */,
 				22a83fe368c671fa8dbd5e51c2e02c66 /* b2Math.cpp in Sources */,
@@ -1355,6 +1424,7 @@
 				ac527216645d66921fb3e36f669df420 /* b2World.cpp in Sources */,
 				5146aeb9e58fb1b388820c2ae900051e /* b2WorldCallbacks.cpp in Sources */,
 				2A18685218959D2C0068D058 /* OscTypes.cpp in Sources */,
+				2A424C8718A714270015A0DC /* svgtiny_list.cpp in Sources */,
 				70acbbd5dbe2725ec1e99ccf448c8e32 /* b2CircleContact.cpp in Sources */,
 				bfd2a0eebe3b4153659ec355abca9208 /* b2Contact.cpp in Sources */,
 				f32187d344f58022dfd48c0f5a1f2a20 /* b2ContactSolver.cpp in Sources */,
@@ -1367,6 +1437,7 @@
 				03ac305c546fedb7c2a7e1a8112cdafb /* b2FrictionJoint.cpp in Sources */,
 				2a5d09413fd64eb3af88ef02ff6a5449 /* b2GearJoint.cpp in Sources */,
 				2A18681C189599120068D058 /* ofxMPMForce.cpp in Sources */,
+				2A424C8418A714270015A0DC /* src_colors.cpp in Sources */,
 				14d76fd1b7f190398d120fa470d42694 /* b2Joint.cpp in Sources */,
 				34bc8bafaa94bd8ccba662d12407e004 /* b2LineJoint.cpp in Sources */,
 				d2969de2782bae96a0c7adc1cbc092ff /* b2MouseJoint.cpp in Sources */,
@@ -1423,6 +1494,7 @@
 				aafcc1a80fa3c88e6d1b2a3dfbef85a5 /* ControlTriggerFilter.cpp in Sources */,
 				8b72ae5aa49843c668896d2d4eae9abf /* ControlValue.cpp in Sources */,
 				3a0cdb804affd643d5e7fda12b44c867 /* ControlXYSpeed.cpp in Sources */,
+				2A424C8518A714270015A0DC /* svgtiny.cpp in Sources */,
 				234661de137e48cf52bc5886d764c183 /* DelayUtils.cpp in Sources */,
 				622e342068345324cb740646b1c26861 /* DSPUtils.cpp in Sources */,
 				aa6dafb687721c5b4e20a079b0fbcd80 /* Effect.cpp in Sources */,
@@ -1441,6 +1513,7 @@
 				fb0cec2120b7ecc76ca7681fb5a9c4e5 /* RectWave.cpp in Sources */,
 				64f4aa5fd33a2e65d8e172172e4f7e1f /* Reverb.cpp in Sources */,
 				2A18685418959D2C0068D058 /* ofxOscMessage.cpp in Sources */,
+				2AE7B5B31899A11E00402849 /* FluidMask.cpp in Sources */,
 				2ce855fa9be7ac5bb1024308c8f8eefa /* RingBuffer.cpp in Sources */,
 				2A18685318959D2C0068D058 /* ofxOscBundle.cpp in Sources */,
 				507bec86ef35aaa2f6c91520945da1b0 /* SampleTable.cpp in Sources */,

@@ -16,6 +16,7 @@
 #include "ofxAVFVideoPlayer.h"
 
 #include "VideoParticle.h"
+#include "FluidMask.h"
 
 class ParticleSystem
 {
@@ -23,6 +24,7 @@ public:
     ParticleSystem();
     ~ParticleSystem();
     void setup(int id, float x, float y, float w, float h, string video);
+    void applyBorders(string svgPath);
     void update();
     void draw();
     
@@ -31,11 +33,15 @@ public:
     void toggleSettings();
     
     void backToPlace(bool b);
+    void breakFluid();
     void resetParticles();
     
     void setFluidForces(vector<ofxMPMForce*>* forces);
+    ofxMPMFluid* getFluidRef();
     
-    void mouseMoved();
+    void mousePressed(int x, int y, int button);
+    void mouseDragged(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
     
     ofVec2f pos;
     ofVec2f size;
@@ -71,6 +77,7 @@ private:
     ofFbo initialFbo, blurHor, blurVer;
     
     // fluid
+    bool bDoFluid;
     bool isReshaping;
     float reshapeForce;
     int breakPoint;
@@ -85,5 +92,14 @@ private:
     float viscosity;
     float gravity;
     
+    // obstacles
+    bool drawObs;
+    ofVec2f currObsCenter;
+    float currObsRad;
+    ofVec2f lineStart;
+    ofVec2f lineEnd;
+    
+    // fluid mask
+    FluidMask fluidMask;
 };
 #endif /* defined(__glitch_video__ParticleSystem__) */

@@ -10,6 +10,7 @@
 
 ParticleSystem::ParticleSystem()
 {
+    bDoFluid = false;
 }
 
 ParticleSystem::~ParticleSystem()
@@ -42,6 +43,11 @@ void ParticleSystem::setup(int _id, float x, float y, float w, float h, string v
     
 }
 
+void ParticleSystem::applyBorders(string svgPath)
+{
+    fluidMask.setup(&fluid, svgPath);
+}
+
 void ParticleSystem::update()
 {
     
@@ -53,25 +59,28 @@ void ParticleSystem::update()
         }
     }    
     
-    updateFluid();
-    vector<ofxMPMParticle*> fParticles = fluid.getParticles();
-    
-    vector<ofVec3f> verts;
-    for (int i=0; i<particles.size(); i++)
+    if (bDoFluid)
     {
-        if (isReshaping)
+        updateFluid();
+        vector<ofxMPMParticle*> fParticles = fluid.getParticles();
+        
+        vector<ofVec3f> verts;
+        for (int i=0; i<particles.size(); i++)
         {
-            ofVec3f force = particles[i]->getRestPosition() - (ofVec3f(fParticles[i]->x, fParticles[i]->y, 0) * ofVec3f(fluid.scaleFactor.x, fluid.scaleFactor.y, 0));
-            fParticles[i]->u = force.x*reshapeForce;
-            fParticles[i]->v = force.y*reshapeForce;
+            if (isReshaping)
+            {
+                ofVec3f force = particles[i]->getRestPosition() - (ofVec3f(fParticles[i]->x, fParticles[i]->y, 0) * ofVec3f(fluid.scaleFactor.x, fluid.scaleFactor.y, 0));
+                fParticles[i]->u = force.x*reshapeForce;
+                fParticles[i]->v = force.y*reshapeForce;
+            }
+            particles[i]->pos.set(fParticles[i]->x*fluid.scaleFactor.x, fParticles[i]->y*fluid.scaleFactor.y, 0);
+            particles[i]->update();
+            particles[i]->fillVertices(verts, parPhysSize);
+    //        noiseT += 0.01;
         }
-        particles[i]->pos.set(fParticles[i]->x*fluid.scaleFactor.x, fParticles[i]->y*fluid.scaleFactor.y, 0);
-        particles[i]->update();
-        particles[i]->fillVertices(verts, parPhysSize);
-//        noiseT += 0.01;
+        
+        vbo.setVertexData(&verts[0], verts.size(), GL_DYNAMIC_DRAW);
     }
-    
-    vbo.setVertexData(&verts[0], verts.size(), GL_DYNAMIC_DRAW);
 }
 
 void ParticleSystem::draw()
@@ -133,6 +142,19 @@ void ParticleSystem::draw()
     //        blurVer.end();
     
     //        blurVer.draw(0, 0);
+    
+    if (drawObs) {
+        ofSetColor(0, 0, 255, 100);
+        ofNoFill();
+        ofLine(lineStart, lineEnd);
+//        ofFill();
+//        ofEllipse(currObsCenter.x, currObsCenter.y, currObsRad*2, currObsRad*2);
+    }
+    
+    
+    // draw fluid borders
+    fluidMask.draw();
+    
     ofPopMatrix();
 }
 
@@ -281,10 +303,10 @@ void ParticleSystem::updateFluid()
     fluid.update();
     
     if (fluid.forces->size() > breakPoint) {
-        isReshaping = false;
-        breakCounter = breakTime;
-        cureCounter = cureTime;
+        breakFluid();
     }
+    
+    // update break counters
     if (breakCounter >= 0) {
         breakCounter--;
         if (breakCounter==0) {
@@ -294,6 +316,7 @@ void ParticleSystem::updateFluid()
     if (cureCounter >= 0) {
         cureCounter--;
         if (cureCounter==0) {
+            bDoFluid = false;
             resetParticles();
         }
     }
@@ -304,13 +327,21 @@ void ParticleSystem::backToPlace(bool b)
     isReshaping = b;
 }
 
+void ParticleSystem::breakFluid()
+{
+    bDoFluid = true;
+    isReshaping = false;
+    breakCounter = breakTime;
+    cureCounter = cureTime;
+}
+
 void ParticleSystem::resetParticles()
 {
     vector<ofxMPMParticle*> par = fluid.getParticles();
     for (int i=0; i<par.size(); i++)
     {
-        par[i]->x = ofMap(particles[i]->restPos.x, 0, size.x, 3, fluid.getGridSizeX()-3);
-        par[i]->y = ofMap(particles[i]->restPos.y, 0, size.y, 3, fluid.getGridSizeY()-3);
+        par[i]->x = ofMap(particles[i]->restPos.x, 0, size.x, 2, fluid.getGridSizeX()-3);
+        par[i]->y = ofMap(particles[i]->restPos.y, 0, size.y, 2, fluid.getGridSizeY()-3);
     }
 }
 
@@ -319,4 +350,38 @@ void ParticleSystem::setFluidForces(vector<ofxMPMForce *> *forces)
     fluid.forces = forces;
 }
 
+ofxMPMFluid* ParticleSystem::getFluidRef()
+{
+    return &fluid;
+}
+
+void ParticleSystem::mousePressed(int x, int y, int button)
+{
+//    currObsCenter = ofVec2f(x-pos.x, y-pos.y);
+    lineStart = lineEnd = ofVec2f(x-pos.x, y-pos.y);
+//    currObsRad = 0;
+    drawObs = true;
+}
+
+void ParticleSystem::mouseDragged(int x, int y, int button)
+{
+//    currObsRad = ofVec2f(x-pos.x, y-pos.y).distance(currObsCenter);
+    lineEnd = ofVec2f(x-pos.x, y-pos.y);
+}
+
+void ParticleSystem::mouseReleased(int x, int y, int button)
+{
+//    currObsCenter /= fluid.scaleFactor;
+//    currObsRad /= fluid.scaleFactor.x;
+//    fluid.addObstacle(new ofxMPMObstacle(currObsCenter.x, currObsCenter.y, currObsRad));
+    ofVec2f line = (lineEnd - lineStart);
+    
+    lineEnd = ofVec2f(x-pos.x, y-pos.y);
+    for (float t=0; t<=1; t+=1/(line.length()/14))
+    {
+        ofVec2f op = (lineStart + line*t) / fluid.scaleFactor;
+        fluid.addObstacle(new ofxMPMObstacle(op.x, op.y, 2));
+    }
+    drawObs = false;
+}
 
