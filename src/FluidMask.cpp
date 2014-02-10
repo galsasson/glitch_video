@@ -66,10 +66,11 @@ void FluidMask::easeOut()
 
 void FluidMask::createObstacles(float spacing)
 {
-    cout<<"Parsing svg paths\n";
+    cout<<"Parsing svg paths... ";
+    
+    int obsNum=0;
     
     int pathNum = svg.getNumPath();
-    
     for (int i=0; i<pathNum; i++)
     {
         // for each path get the outline
@@ -82,9 +83,12 @@ void FluidMask::createObstacles(float spacing)
             {
 //                cout<<"vertex at "<<points[v].x<<"x"<<points[v].y<<endl;
                 addObstacle(points[v].x, points[v].y, obstacleSize);
+                obsNum++;
             }
         }
     }
+    
+    cout<<"created "<<obsNum<<" obstacles\n";
 }
 
 

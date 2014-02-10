@@ -31,5 +31,7 @@ class testApp : public ofBaseApp{
 private:
     ParticleSystem ps;
     FlowInput flowInput;
+    
+    bool bDrawFrameRate;
  
 };

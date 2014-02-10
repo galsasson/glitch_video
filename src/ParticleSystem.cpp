@@ -70,8 +70,8 @@ void ParticleSystem::update()
             {
                 float reshapeForce = tweenReshapeForce.update();
                 ofVec3f force = particles[i]->getRestPosition() - (ofVec3f(fParticles[i]->x, fParticles[i]->y, 0) * ofVec3f(fluid.scaleFactor.x, fluid.scaleFactor.y, 0));
-                fParticles[i]->u = force.x*reshapeForce;
-                fParticles[i]->v = force.y*reshapeForce;
+                fParticles[i]->u += force.x*reshapeForce;
+                fParticles[i]->v += force.y*reshapeForce;
             }
             particles[i]->pos.set(fParticles[i]->x*fluid.scaleFactor.x, fParticles[i]->y*fluid.scaleFactor.y, 0);
             particles[i]->update();
@@ -191,7 +191,7 @@ void ParticleSystem::initVideoParticles()
     }
     
     // create particles, and set texture coordinates
-    for (int y=350; y<videoDim.y-350; y+=parChunk)
+    for (int y=0; y<videoDim.y; y+=parChunk)
     {
         for (int x=0; x<videoDim.x; x+=parChunk)
         {
@@ -216,10 +216,11 @@ void ParticleSystem::initVideoParticles()
     vbo.setIndexData(&indices[0], indices.size(), GL_STATIC_DRAW);
     
     cout<<"Initializing fluid["<<id<<"]: number of particles ("<<particles.size()<<")\n";
-    fluid.setup(particles.size(), videoDim.x/10, videoDim.y/10);
+    fluid.setup(particles.size(), videoDim.x/5, videoDim.y/5);
     fluid.numParticles = particles.size();
     fluid.scaleFactor.x = size.x / fluid.getGridSizeX();
     fluid.scaleFactor.y = size.y / fluid.getGridSizeY();
+    fluid.bDoMouse = false;
     
     // init particle positions to rest
     resetParticles();

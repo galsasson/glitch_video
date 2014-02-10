@@ -5,9 +5,11 @@ void testApp::setup(){
     ofSetVerticalSync(true);
     
 //    ps.setup(0, 200, 0, 640/*ofGetWidth()-200*/, 320/*ofGetHeight()*/, "videos/different_pulses.mp4");
-    ps.setup(0, 0, 0, 1920, 1080, "videos/innovid3.mp4", "svg/innovid2.svg", "alpha/innovid.jpg");
+    ps.setup(0, 0, 0, 1920, 1080, "videos/innovid3.mp4", "svg/innovid4.svg", "alpha/innovid.jpg");
     flowInput.listen(10000);
     ps.setFluidForces(flowInput.getForcesRef());
+    
+    bDrawFrameRate = true;
     
 //    fluidMask.setup(ps.getFluidRef());
 }
@@ -26,6 +28,14 @@ void testApp::draw()
 
     ps.draw();
     
+    if (bDrawFrameRate)
+    {
+        ofSetColor(255);
+        char framerate[128];
+        sprintf(framerate, "%f", ofGetFrameRate());
+        ofDrawBitmapString(framerate, 20, ofGetHeight());
+    }
+    
     ofPopStyle();
 }
 
@@ -34,6 +44,7 @@ void testApp::keyPressed(int key){
     switch (key)
     {
         case 'g':
+            bDrawFrameRate = !bDrawFrameRate;
             ps.toggleSettings();
             flowInput.toggleSettings();
             break;
