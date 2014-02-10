@@ -24,8 +24,7 @@ class ParticleSystem
 public:
     ParticleSystem();
     ~ParticleSystem();
-    void setup(int id, float x, float y, float w, float h, string video);
-    void applyBorders(string svgPath);
+    void setup(int id, float x, float y, float w, float h, string video, string svg, string alpha);
     void update();
     void draw();
     
@@ -54,6 +53,7 @@ private:
     void setupGui();
     void updateFluid();
     void startFluidReshape();
+    int getRegionValue(int x, int y, int size);
 
     bool hasContent;
     
@@ -102,5 +102,7 @@ private:
     // fluid mask
     string svgPath;
     FluidMask fluidMask;
+    string alphaFile;
+    ofImage alphaImg;
 };
 #endif /* defined(__glitch_video__ParticleSystem__) */

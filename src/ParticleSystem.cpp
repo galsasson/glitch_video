@@ -19,11 +19,15 @@ ParticleSystem::~ParticleSystem()
     videoPlayer.close();
 }
 
-void ParticleSystem::setup(int _id, float x, float y, float w, float h, string video)
+void ParticleSystem::setup(int _id, float x, float y, float w, float h, string video, string svg, string alpha)
 {
     id = _id;
     pos = ofVec2f(x, y);
     size = ofVec2f(w, h);
+    svgPath = svg;
+    alphaFile = alpha;
+    
+    alphaImg.loadImage(alphaFile);
     
     setupGui();
     
@@ -41,12 +45,6 @@ void ParticleSystem::setup(int _id, float x, float y, float w, float h, string v
     
     hasContent = false;
     isReshaping = true;
-    
-}
-
-void ParticleSystem::applyBorders(string _svgPath)
-{
-    svgPath = _svgPath;
 }
 
 void ParticleSystem::update()
@@ -185,20 +183,30 @@ void ParticleSystem::initVideoParticles()
     vector<ofIndexType> indices;
     vector<ofVec2f> uvs;
     vector<ofFloatColor> colors;
+    
+    // make sure that video and alpha dimensions match
+    if (videoDim.x != alphaImg.width ||
+        videoDim.y != alphaImg.height) {
+        cout<<"warning! video and alpha dimensions do not match"<<endl;
+    }
+    
     // create particles, and set texture coordinates
     for (int y=350; y<videoDim.y-350; y+=parChunk)
     {
         for (int x=0; x<videoDim.x; x+=parChunk)
         {
-            // create a new particle on the grid
-            float px = x / videoDim.x * size.x;
-            float py = y / videoDim.y * size.y;
-            VideoParticle *vp = new VideoParticle(particles.size(), px, py, 0, parChunk);
-            vp->fillVertices(verts, parPhysSize);
-            vp->fillIndices(indices);
-            vp->fillUvs(uvs, ofVec2f(x, y));
-            vp->fillColors(colors, ofFloatColor(1, 1, 1));
-            particles.push_back(vp);
+            if (getRegionValue(x, y, parChunk) > 0)
+            {
+                // create a new particle on the grid
+                float px = x / videoDim.x * size.x;
+                float py = y / videoDim.y * size.y;
+                VideoParticle *vp = new VideoParticle(particles.size(), px, py, 0, parChunk);
+                vp->fillVertices(verts, parPhysSize);
+                vp->fillIndices(indices);
+                vp->fillUvs(uvs, ofVec2f(x, y));
+                vp->fillColors(colors, ofFloatColor(1, 1, 1));
+                particles.push_back(vp);
+            }
         }
     }
     
@@ -368,6 +376,21 @@ void ParticleSystem::startFluidReshape()
     isReshaping = true;
     fluidMask.easeOut();
     tweenReshapeForce.setParameters(0, tweenReshapeEasing, ofxTween::easeIn, 0, maxReshapeForce, 5000, 0);
+}
+
+int ParticleSystem::getRegionValue(int sx, int sy, int size)
+{
+    int colorVal=0;
+    
+    for (int y=sy; y<sy+size; y++)
+    {
+        for (int x=sx; x<sx+size; x++)
+        {
+            colorVal += alphaImg.getPixels()[y*alphaImg.width*3 + x*3];
+        }
+    }
+    
+    return colorVal;
 }
 
 
