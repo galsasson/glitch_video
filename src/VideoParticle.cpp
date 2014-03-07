@@ -73,6 +73,26 @@ void VideoParticle::applyForce(ofVec3f force)
     acc += force;
 }
 
+void VideoParticle::handleObstacles(vector<ofxMPMObstacle *>& obstacles)
+{
+    for (int i=0; i<obstacles.size(); i++)
+    {
+        handleObstacle(ofVec2f(obstacles[i]->cx, obstacles[i]->cy));
+    }
+}
+
+void VideoParticle::handleObstacle(ofVec2f point)
+{
+    ofVec2f diff = pos - point;
+    if (diff.length() < 20) {
+        // apply force (bounce)
+        float mag = 1/diff.length();
+        diff.normalize();
+        diff.scale(mag*20);
+        applyForce(diff);
+    }
+}
+
 ofVec3f VideoParticle::getRestPosition()
 {
     return restPos;
@@ -86,7 +106,7 @@ void VideoParticle::update()
     acc = acc * 0;
     
     // friction
-    vel *= 0.98;
+    vel *= 0.998;
     
     checkBounds();
 }
@@ -115,5 +135,13 @@ void VideoParticle::checkBounds()
     else if (pos.y > ofGetHeight()) {
         pos.y = ofGetHeight();
         vel.y *= -1;
+    }
+    
+    // split two screens
+    if (pos.x < 1920 && restPos.x > 1920) {
+        pos.x = 1925;
+    }
+    else if (pos.x > 1920 && restPos.x < 1920) {
+        pos.x = 1915;
     }
 }

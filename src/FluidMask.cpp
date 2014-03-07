@@ -19,7 +19,7 @@ void FluidMask::setup(ofxMPMFluid *f, string svgPath)
     svg.load(svgPath);
     
     obstacleSize = 40 / fluid->scaleFactor.x;
-    createObstacles(60);
+    createObstacles(25);
     tweenSize.setParameters(0, easeQuadSize, ofxTween::easeOut, obstacleSize, obstacleSize, 0, 0);
 }
 
@@ -54,12 +54,12 @@ void FluidMask::draw()
 
 void FluidMask::easeIn()
 {
-    tweenSize.setParameters(0, easeQuadSize, ofxTween::easeOut, 0, obstacleSize, 0, 0);
+//    tweenSize.setParameters(0, easeQuadSize, ofxTween::easeOut, 0, obstacleSize, 0, 0);
 }
 
 void FluidMask::easeOut()
 {
-    tweenSize.setParameters(0, easeQuadSize, ofxTween::easeIn, obstacleSize, 0, 5000, 0);
+//    tweenSize.setParameters(0, easeQuadSize, ofxTween::easeIn, obstacleSize, 0, 5000, 0);
 }
 
 

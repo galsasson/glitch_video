@@ -61,20 +61,30 @@ void ParticleSystem::update()
     
     // update particle positions
     vector<ofVec3f> verts;
+    verts.reserve(particles.size()*4);
     if (bDoFluid)
     {
+#ifdef NO_FLUID
+        for (int i=0; i<particles.size(); i++)
+        {
+//            particles[i]->handleObstacles(fluid.getObstacles());
+            particles[i]->handleObstacle(ofVec2f(ofGetMouseX(), ofGetMouseY()));
+            particles[i]->update();
+            particles[i]->fillVertices(verts, parPhysSize);
+        }
+#else
         updateFluid();
         vector<ofxMPMParticle*> fParticles = fluid.getParticles();
         
-        verts.reserve(particles.size()*4);
         for (int i=0; i<particles.size(); i++)
         {
             particles[i]->pos.set(fParticles[i]->x*fluid.scaleFactor.x, fParticles[i]->y*fluid.scaleFactor.y, 0);
             particles[i]->update();
             particles[i]->fillVertices(verts, parPhysSize);
         }
+#endif
     }
-    if (isReshaping)
+    else if (isReshaping)
     {
         float reshapeForce = tweenReshapeForce.update();
         
@@ -214,7 +224,7 @@ void ParticleSystem::drawForces()
     for (int i=0; i<forces->size(); i++)
     {
         ofVec2f origin = (*forces)[i]->origin * fluid.scaleFactor;
-        ofVec2f force = (*forces)[i]->force * 100;// * fluid.scaleFactor;
+        ofVec2f force = (*forces)[i]->force * fluid.scaleFactor;
         ofLine(origin, origin+force);
     }
     
@@ -288,11 +298,11 @@ void ParticleSystem::initVideoParticles()
     vbo.setIndexData(&indices[0], indices.size(), GL_STATIC_DRAW);
     
     cout<<"Initializing fluid["<<id<<"]: number of particles ("<<particles.size()<<")\n";
-    fluid.setup(particles.size(), videoDim.x/8, videoDim.y/8);
+    fluid.setup(particles.size(), videoDim.x/14, videoDim.y/14);
     fluid.numParticles = particles.size();
     fluid.scaleFactor.x = size.x / fluid.getGridSizeX();
     fluid.scaleFactor.y = size.y / fluid.getGridSizeY();
-    fluid.mouseForce = 32;
+    fluid.mouseForce = 12;
     fluid.bDoMouse = false;
     
     // init particle positions to rest
@@ -320,8 +330,6 @@ void ParticleSystem::setupGui()
     gui->addSlider("Particle Size", 0, 50, &parPhysSize);
     liquidBlur = 0;
     gui->addSlider("Liquid Blur", 0, 10, &liquidBlur);
-    blurAlpha = 1;
-    gui->addSlider("Blur Alpha", 0, 1, &blurAlpha);
     trailStrength = 0.8;
     gui->addSlider("Trail Strength", 0.5, 1, &trailStrength);
     bUseAddMode = false;
@@ -330,8 +338,8 @@ void ParticleSystem::setupGui()
     gui->addSlider("Max Reshape Force", 0, 0.2, &maxReshapeForce);
     breakPoint = 20;
     gui->addIntSlider("Break point", 1, 100, &breakPoint);
-    breakTime = 100;
-    gui->addIntSlider("Break time (frames)", 1, 1000, &breakTime);
+    breakTime = 2;
+    gui->addIntSlider("Break time (frames)", 1, 30, &breakTime);
     cureTime = 120;
     gui->addIntSlider("Cure time (frames)", 1, 1100, &cureTime);
     
@@ -402,7 +410,8 @@ void ParticleSystem::updateFluid()
 
 void ParticleSystem::backToPlace(bool b)
 {
-    isReshaping = b;
+    breakCounter = 1;
+//    isReshaping = b;
 }
 
 void ParticleSystem::breakFluid()
@@ -414,11 +423,7 @@ void ParticleSystem::breakFluid()
         tweenBlur.setParameters(0, tweenBlurEasing, ofxTween::easeOut, 0, liquidBlur, 500, 0);
     }
     
-    // if we are in reShaping mode
-//    if (isReshaping) {
-        fluidMask.easeIn();
-//        isReshaping = false;
-//    }
+    fluidMask.easeIn();
     
     breakCounter = breakTime;
     cureCounter = cureTime;
@@ -464,7 +469,7 @@ void ParticleSystem::startFluidReshape()
     resetFluidParticles();
     isReshaping = true;
     fluidMask.easeOut();
-    tweenReshapeForce.setParameters(0, tweenReshapeEasing, ofxTween::easeIn, 0, maxReshapeForce, 3000, 0);
+    tweenReshapeForce.setParameters(0, tweenReshapeEasing, ofxTween::easeIn, maxReshapeForce, 0, 3000, 0);
     tweenBlur.setParameters(0, tweenBlurEasing, ofxTween::easeIn, liquidBlur, 0, 3000, 0);
 }
 

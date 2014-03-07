@@ -75,7 +75,6 @@ private:
     float trailStrength;
     bool bUseAddMode;
     
-    float backgroundAlpha;
     
     ofMutex drawMut;
     
@@ -89,6 +88,7 @@ private:
     
     // draw parameters
     bool drawVideoBackground;
+    float backgroundAlpha;
     
     // behaviour parameters
     bool addSVGBorders;

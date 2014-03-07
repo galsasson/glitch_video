@@ -76,6 +76,9 @@ void testApp::keyReleased(int key){
         case 'p':
             ps.backToPlace(true);
             break;
+        case 'b':
+            ps.backToPlace(true);
+            break;
         default:
             break;
     }

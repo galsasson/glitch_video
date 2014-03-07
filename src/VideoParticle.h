@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "ofMain.h"
+#include "ofxMPMFluid.h"
 
 class VideoParticle
 {
@@ -22,6 +23,9 @@ public:
     void fillColors(vector<ofFloatColor> &colors, ofFloatColor color);
     
     void applyForce(ofVec3f force);
+    void handleObstacles(vector<ofxMPMObstacle*>& obstacles);
+    void handleObstacle(ofVec2f point);
+    
     ofVec3f getRestPosition();
     
     void update();
