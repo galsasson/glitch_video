@@ -12,6 +12,7 @@
 #include <iostream>
 #include "ofMain.h"
 #include "ofxOsc.h"
+#include "ofxMPMFluid.h"
 #include "ofxMPMForce.h"
 #include "ofxUI.h"
 
@@ -20,7 +21,8 @@ class FlowInput
 public:
     FlowInput();
     void listen(int port);
-    void update();
+    void update(ofxMPMFluid& fluid);
+    void draw();
     vector<ofxMPMForce*>* getForcesRef();
     void loadSettings();
     void saveSettings();

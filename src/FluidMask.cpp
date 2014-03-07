@@ -18,8 +18,8 @@ void FluidMask::setup(ofxMPMFluid *f, string svgPath)
     fluid = f;
     svg.load(svgPath);
     
-    obstacleSize = 25 / fluid->scaleFactor.x;
-    createObstacles(30);
+    obstacleSize = 40 / fluid->scaleFactor.x;
+    createObstacles(60);
     tweenSize.setParameters(0, easeQuadSize, ofxTween::easeOut, obstacleSize, obstacleSize, 0, 0);
 }
 
@@ -73,8 +73,13 @@ void FluidMask::createObstacles(float spacing)
     int pathNum = svg.getNumPath();
     for (int i=0; i<pathNum; i++)
     {
+        ofPath path = svg.getPathAt(i);
+        
+        if (path.getStrokeColor().r != 0) {
+            continue;
+        }
         // for each path get the outline
-        vector<ofPolyline> outline = svg.getPathAt(i).getOutline();
+        vector<ofPolyline> outline = path.getOutline();
         for (int l=0; l<outline.size(); l++)
         {
             ofPolyline resampledLine = outline[l].getResampledBySpacing(spacing);

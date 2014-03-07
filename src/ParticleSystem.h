@@ -27,6 +27,8 @@ public:
     void setup(int id, float x, float y, float w, float h, string video, string svg, string alpha);
     void update();
     void draw();
+    void drawParticles();
+    void drawForces();
     
     void loadSettings();
     void saveSettings();
@@ -34,10 +36,11 @@ public:
     
     void backToPlace(bool b);
     void breakFluid();
+    void resetFluidParticles();
     void resetParticles();
     
     void setFluidForces(vector<ofxMPMForce*>* forces);
-    ofxMPMFluid* getFluidRef();
+    ofxMPMFluid& getFluidRef();
     
     void mousePressed(int x, int y, int button);
     void mouseDragged(int x, int y, int button);
@@ -53,13 +56,14 @@ private:
     void setupGui();
     void updateFluid();
     void startFluidReshape();
-    int getRegionValue(int x, int y, int size);
+    float getRegionValue(int x, int y, int size);
 
     bool hasContent;
     
     ofxUICanvas *gui;
     
     ofxAVFVideoPlayer videoPlayer;
+//    ofVideoPlayer videoPlayer;
     ofVec2f videoDim;
     bool setupDim;
     
@@ -71,6 +75,8 @@ private:
     float trailStrength;
     bool bUseAddMode;
     
+    float backgroundAlpha;
+    
     ofMutex drawMut;
     
     // blur
@@ -80,6 +86,12 @@ private:
     
     ofShader shad_blurX, shad_blurY;
     ofFbo initialFbo, blurHor, blurVer;
+    
+    // draw parameters
+    bool drawVideoBackground;
+    
+    // behaviour parameters
+    bool addSVGBorders;
     
     // fluid
     bool bDoFluid;

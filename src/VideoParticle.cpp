@@ -91,6 +91,13 @@ void VideoParticle::update()
     checkBounds();
 }
 
+void VideoParticle::reset()
+{
+    acc = ofVec3f(0, 0, 0);
+    vel = ofVec3f(0, 0, 0);
+    pos = restPos;
+}
+
 void VideoParticle::checkBounds()
 {
     if (pos.x < 0) {

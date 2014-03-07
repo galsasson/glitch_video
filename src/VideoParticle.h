@@ -26,6 +26,8 @@ public:
     
     void update();
     
+    void reset();
+    
     unsigned int id;
     ofVec3f pos;
     ofVec3f vel;

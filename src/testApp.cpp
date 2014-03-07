@@ -5,7 +5,8 @@ void testApp::setup(){
     ofSetVerticalSync(true);
     
 //    ps.setup(0, 200, 0, 640/*ofGetWidth()-200*/, 320/*ofGetHeight()*/, "videos/different_pulses.mp4");
-    ps.setup(0, 0, 0, 1920, 1080, "videos/innovid3.mp4", "svg/innovid4.svg", "alpha/innovid.jpg");
+//    ps.setup(0, 0, 0, 1920, 1080, "videos/innovid3.mp4", "svg/innovid4.svg", "alpha/innovid.jpg");
+    ps.setup(0, 0, 0, 3840, 1080, "videos/innovid_fullres.mp4", "svg/innovid_outline_fullres_gal.svg"/*"svg/innovid4.svg"*/, "alpha/innovid_alpha_fullres.gif");
     flowInput.listen(10000);
     ps.setFluidForces(flowInput.getForcesRef());
     
@@ -16,7 +17,7 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-    flowInput.update();
+    flowInput.update(ps.getFluidRef());
     ps.update();
 }
 
@@ -24,9 +25,10 @@ void testApp::update(){
 void testApp::draw()
 {
     ofPushStyle();
-    ofClear(0);
+//    ofClear(0);
 
     ps.draw();
+    //flowInput.draw();
     
     if (bDrawFrameRate)
     {

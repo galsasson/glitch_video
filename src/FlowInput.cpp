@@ -19,7 +19,7 @@ void FlowInput::listen(int port)
     oscRecv.setup(port);
 }
 
-void FlowInput::update()
+void FlowInput::update(ofxMPMFluid& fluid)
 {
     while (oscRecv.hasWaitingMessages())
     {
@@ -30,7 +30,7 @@ void FlowInput::update()
             if (forces.size() < maxForces) {
                 ofVec2f origin = ofVec2f(m.getArgAsFloat(0), m.getArgAsFloat(1));
                 ofVec2f force = ofVec2f(m.getArgAsFloat(2)*forceStrength, m.getArgAsFloat(3)*forceStrength);
-                forces.push_back(new ofxMPMForce(origin, force, forceLife));
+                forces.push_back(new ofxMPMForce(origin * ofVec2f(fluid.gridSizeX, fluid.gridSizeY), force, forceLife));
             }
         }
     }
@@ -48,7 +48,14 @@ void FlowInput::update()
         }
     }
     
-//    cout<<"forces = "<<forces.size()<<endl;
+    //cout<<"forces = "<<forces.size()<<endl;
+}
+
+void FlowInput::draw()
+{
+    for (int i=0; i<forces.size(); i++)
+    {
+    }
 }
 
 vector<ofxMPMForce*>* FlowInput::getForcesRef()

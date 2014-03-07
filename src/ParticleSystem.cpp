@@ -35,6 +35,7 @@ void ParticleSystem::setup(int _id, float x, float y, float w, float h, string v
     videoPlayer.loadMovie(video);
     //    videoPlayer.loadMovie("videos/xx.mp4");
     videoPlayer.setLoopState(OF_LOOP_NORMAL);
+    videoPlayer.setVolume(0);
     videoPlayer.play();
     setupDim = true;
     
@@ -55,33 +56,87 @@ void ParticleSystem::update()
             newVideo(ofVec2f(videoPlayer.getWidth(), videoPlayer.getHeight()));
             setupDim = false;
         }
-    }    
+    }
     
+    
+    // update particle positions
+    vector<ofVec3f> verts;
     if (bDoFluid)
     {
         updateFluid();
         vector<ofxMPMParticle*> fParticles = fluid.getParticles();
         
-        vector<ofVec3f> verts;
         verts.reserve(particles.size()*4);
         for (int i=0; i<particles.size(); i++)
         {
-            if (isReshaping)
-            {
-                float reshapeForce = tweenReshapeForce.update();
-                ofVec3f force = particles[i]->getRestPosition() - (ofVec3f(fParticles[i]->x, fParticles[i]->y, 0) * ofVec3f(fluid.scaleFactor.x, fluid.scaleFactor.y, 0));
-                fParticles[i]->u += force.x*reshapeForce;
-                fParticles[i]->v += force.y*reshapeForce;
-            }
             particles[i]->pos.set(fParticles[i]->x*fluid.scaleFactor.x, fParticles[i]->y*fluid.scaleFactor.y, 0);
             particles[i]->update();
             particles[i]->fillVertices(verts, parPhysSize);
-    //        noiseT += 0.01;
         }
-        
-        vbo.setVertexData(&verts[0], verts.size(), GL_DYNAMIC_DRAW);
     }
+    if (isReshaping)
+    {
+        float reshapeForce = tweenReshapeForce.update();
+        
+        for (int i=0; i<particles.size(); i++)
+        {
+            ofVec3f offset = particles[i]->getRestPosition() - particles[i]->pos;
+            particles[i]->vel = offset*reshapeForce;
+            particles[i]->update();
+            particles[i]->fillVertices(verts, parPhysSize);
+        }
+    }
+    else {
+        for (int i=0; i<particles.size(); i++)
+        {
+            ofVec3f offset = particles[i]->getRestPosition() - particles[i]->pos;
+            particles[i]->update();
+            particles[i]->fillVertices(verts, parPhysSize);
+        }
+    }
+    vbo.setVertexData(&verts[0], verts.size(), GL_DYNAMIC_DRAW);
+    
+    if (fluid.forces->size() > breakPoint) {
+        breakFluid();
+    }
+
+    // update break counters
+    if (breakCounter >= 0) {
+        breakCounter--;
+        if (breakCounter==0) {
+            startFluidReshape();
+        }
+    }
+    if (cureCounter >= 0) {
+        cureCounter--;
+        if (cureCounter==0) {
+            resetParticles();
+        }
+    }
+    
 }
+
+void ParticleSystem::drawParticles()
+{
+//    if (videoPlayer.getTexture()) {
+        videoPlayer.getTexture()->bind();
+//    }
+    ofEnableAlphaBlending();
+    ofSetColor(0, 0, 0, 255 - 255*trailStrength);
+    ofRect(0, 0, size.x, size.y);
+    glDisable(GL_DEPTH_TEST);
+    if (bUseAddMode) {
+        ofEnableBlendMode(OF_BLENDMODE_ADD);
+    }
+    
+    vbo.drawElements(GL_TRIANGLES, particles.size()*6);
+    
+//    if (videoPlayer.getTexture()) {
+        videoPlayer.getTexture()->unbind();
+//    }
+}
+
+#define DO_BLUR
 
 void ParticleSystem::draw()
 {
@@ -89,66 +144,80 @@ void ParticleSystem::draw()
         return;
     }
     
-    float blur = tweenBlur.update();
-    
     ofPushMatrix();
     ofTranslate(pos);
     
+#ifdef DO_BLUR
+    float blur = tweenBlur.update();
+    
     initialFbo.begin();
-    drawMut.lock();
     if (videoPlayer.isFrameNew())
     {
-        if (videoPlayer.getTexture()) {
-            videoPlayer.getTexture()->bind();
-        }
-        ofEnableAlphaBlending();
-        ofSetColor(0, 0, 0, 255 - 255*trailStrength);
-        ofRect(0, 0, size.x, size.y);
-        glDisable(GL_DEPTH_TEST);
-        if (bUseAddMode) {
-            ofEnableBlendMode(OF_BLENDMODE_ADD);
-        }
-        
-        vbo.drawElements(GL_TRIANGLES, particles.size()*6);
-        
-        if (videoPlayer.getTexture()) {
-            videoPlayer.getTexture()->unbind();
-        }
+        drawParticles();
     }
-    drawMut.unlock();
-    
     initialFbo.end();
     
+
     blurHor.begin();
     shad_blurX.begin();
     shad_blurX.setUniform1f("blurAmnt", blur);
-    shad_blurX.setUniform1f("blurAlpha", blurAlpha);
-    
-    ofClear(0);
     initialFbo.draw(0, 0);
-    
-    
     shad_blurX.end();
     blurHor.end();
-    
-    //        blurVer.begin();
-    ofClear(0);
-    //        initialFbo.draw(0, 0);
+
+    // draw background
+    if (drawVideoBackground)
+    {
+        ofSetColor(255, 255);
+        videoPlayer.draw(-10, -10);
+        ofEnableAlphaBlending();
+        ofSetColor(0, 255 - backgroundAlpha);             // background alpha here
+        ofRect(0, 0, size.x, size.y);
+    }
+
     shad_blurY.begin();
     shad_blurY.setUniform1f("blurAmnt", blur);
-    shad_blurX.setUniform1f("blurAlpha", blurAlpha);
-    
     blurHor.draw(0, 0);
-    
     shad_blurY.end();
+
+#else
+//    if (videoPlayer.isFrameNew())
+//    {
+    ofEnableAlphaBlending();
+    
+    videoPlayer.draw(0, 0);
+    ofSetColor(0, 0, 0, 100);
+    ofFill();
+    ofRect(0, 0, size.x, size.y);
+    drawParticles();
+//    }
+#endif
     //        blurVer.end();
     
     //        blurVer.draw(0, 0);
     
     // draw fluid borders
-    fluidMask.draw();
+    //fluidMask.draw();
+    
+    // draw forces
+    drawForces();
     
     ofPopMatrix();
+}
+
+void ParticleSystem::drawForces()
+{
+    ofSetColor(255, 255, 255);
+    ofNoFill();
+    ofSetLineWidth(4);
+    vector<ofxMPMForce*>* forces = fluid.forces;
+    for (int i=0; i<forces->size(); i++)
+    {
+        ofVec2f origin = (*forces)[i]->origin * fluid.scaleFactor;
+        ofVec2f force = (*forces)[i]->force * 100;// * fluid.scaleFactor;
+        ofLine(origin, origin+force);
+    }
+    
 }
 
 void ParticleSystem::newVideo(ofVec2f dim)
@@ -166,7 +235,9 @@ void ParticleSystem::newVideo(ofVec2f dim)
     blurVer.end();
     initialFbo.allocate(size.x, size.y, GL_RGBA);
     initialFbo.begin();
-    ofClear(0);
+    ofSetColor(0, 0, 0);
+    ofRect(0, 0, size.x, size.y);
+//    ofClear(0);
     initialFbo.end();
     
     // init the particle system
@@ -195,7 +266,8 @@ void ParticleSystem::initVideoParticles()
     {
         for (int x=0; x<videoDim.x; x+=parChunk)
         {
-            if (getRegionValue(x, y, parChunk) > 0)
+//            cout << getRegionValue(x, y, parChunk);
+            if (getRegionValue(x, y, parChunk) < 255)
             {
                 // create a new particle on the grid
                 float px = x / videoDim.x * size.x;
@@ -216,18 +288,21 @@ void ParticleSystem::initVideoParticles()
     vbo.setIndexData(&indices[0], indices.size(), GL_STATIC_DRAW);
     
     cout<<"Initializing fluid["<<id<<"]: number of particles ("<<particles.size()<<")\n";
-    fluid.setup(particles.size(), videoDim.x/5, videoDim.y/5);
+    fluid.setup(particles.size(), videoDim.x/8, videoDim.y/8);
     fluid.numParticles = particles.size();
     fluid.scaleFactor.x = size.x / fluid.getGridSizeX();
     fluid.scaleFactor.y = size.y / fluid.getGridSizeY();
+    fluid.mouseForce = 32;
     fluid.bDoMouse = false;
     
     // init particle positions to rest
     resetParticles();
 
     // create fluid obstacles according to svgPath
-    if (svgPath != "") {
-        fluidMask.setup(&fluid, svgPath);
+    if (addSVGBorders) {
+        if (svgPath != "") {
+            fluidMask.setup(&fluid, svgPath);
+        }
     }
 }
 
@@ -247,8 +322,8 @@ void ParticleSystem::setupGui()
     gui->addSlider("Liquid Blur", 0, 10, &liquidBlur);
     blurAlpha = 1;
     gui->addSlider("Blur Alpha", 0, 1, &blurAlpha);
-    trailStrength = 0;
-    gui->addSlider("Trail Strength", 0, 1, &trailStrength);
+    trailStrength = 0.8;
+    gui->addSlider("Trail Strength", 0.5, 1, &trailStrength);
     bUseAddMode = false;
     gui->addToggle("Add Mode", &bUseAddMode);
     maxReshapeForce = 0.01;
@@ -259,6 +334,13 @@ void ParticleSystem::setupGui()
     gui->addIntSlider("Break time (frames)", 1, 1000, &breakTime);
     cureTime = 120;
     gui->addIntSlider("Cure time (frames)", 1, 1100, &cureTime);
+    
+    backgroundAlpha = 0;
+    gui->addSlider("Background Alpha", 0, 255, &backgroundAlpha);
+    drawVideoBackground = true;
+    gui->addToggle("Video Background", &drawVideoBackground);
+    addSVGBorders = true;
+    gui->addToggle("Add SVG Borders", &addSVGBorders);
     
     gui->addSpacer();
     gui->addLabel("Fluid");
@@ -316,23 +398,6 @@ void ParticleSystem::updateFluid()
     fluid.update(ofGetMouseX(), ofGetMouseY());
 //    fluid.update();
     
-    if (fluid.forces->size() > breakPoint) {
-        breakFluid();
-    }
-    
-    // update break counters
-    if (breakCounter >= 0) {
-        breakCounter--;
-        if (breakCounter==0) {
-            startFluidReshape();
-        }
-    }
-    if (cureCounter >= 0) {
-        cureCounter--;
-        if (cureCounter==0) {
-            resetParticles();
-        }
-    }
 }
 
 void ParticleSystem::backToPlace(bool b)
@@ -350,36 +415,60 @@ void ParticleSystem::breakFluid()
     }
     
     // if we are in reShaping mode
-    if (isReshaping) {
+//    if (isReshaping) {
         fluidMask.easeIn();
-        isReshaping = false;
-    }
+//        isReshaping = false;
+//    }
     
     breakCounter = breakTime;
     cureCounter = cureTime;
 }
 
+void ParticleSystem::resetFluidParticles()
+{
+    vector<ofxMPMParticle*> fParticles = fluid.getParticles();
+    for (int i=0; i<fParticles.size(); i++)
+    {
+        fParticles[i]->x = ofMap(particles[i]->restPos.x, 0, size.x, 2, fluid.getGridSizeX()-3);
+        fParticles[i]->y = ofMap(particles[i]->restPos.y, 0, size.y, 2, fluid.getGridSizeY()-3);
+        fParticles[i]->u = 0;
+        fParticles[i]->v = 0;
+    }
+}
+
 void ParticleSystem::resetParticles()
 {
-    bDoFluid = false;
+    isReshaping = false;
+//    cout<<"inside resetParticles\n";
 
-    vector<ofxMPMParticle*> par = fluid.getParticles();
-    for (int i=0; i<par.size(); i++)
+    resetFluidParticles();
+    for (int i=0; i<particles.size(); i++)
     {
-        par[i]->x = ofMap(particles[i]->restPos.x, 0, size.x, 2, fluid.getGridSizeX()-3);
-        par[i]->y = ofMap(particles[i]->restPos.y, 0, size.y, 2, fluid.getGridSizeY()-3);
+        particles[i]->reset();
     }
-    tweenBlur.setParameters(0, tweenBlurEasing, ofxTween::easeIn, liquidBlur, 0, 3000, 0);
 }
 
 void ParticleSystem::startFluidReshape()
 {
+    // update particles velocity from fluid simulation velocities
+    vector<ofxMPMParticle*> fParticles = fluid.getParticles();
+
+    for (int i=0; i<particles.size(); i++)
+    {
+        particles[i]->vel.x = fParticles[i]->u;
+        particles[i]->vel.y = fParticles[i]->v;
+    }
+    
+    
+    bDoFluid = false;
+    resetFluidParticles();
     isReshaping = true;
     fluidMask.easeOut();
-    tweenReshapeForce.setParameters(0, tweenReshapeEasing, ofxTween::easeIn, 0, maxReshapeForce, 5000, 0);
+    tweenReshapeForce.setParameters(0, tweenReshapeEasing, ofxTween::easeIn, 0, maxReshapeForce, 3000, 0);
+    tweenBlur.setParameters(0, tweenBlurEasing, ofxTween::easeIn, liquidBlur, 0, 3000, 0);
 }
 
-int ParticleSystem::getRegionValue(int sx, int sy, int size)
+float ParticleSystem::getRegionValue(int sx, int sy, int size)
 {
     int colorVal=0;
     
@@ -391,7 +480,7 @@ int ParticleSystem::getRegionValue(int sx, int sy, int size)
         }
     }
     
-    return colorVal;
+    return colorVal / (size*size);
 }
 
 
@@ -400,9 +489,9 @@ void ParticleSystem::setFluidForces(vector<ofxMPMForce *> *forces)
     fluid.forces = forces;
 }
 
-ofxMPMFluid* ParticleSystem::getFluidRef()
+ofxMPMFluid& ParticleSystem::getFluidRef()
 {
-    return &fluid;
+    return fluid;
 }
 
 void ParticleSystem::mousePressed(int x, int y, int button)

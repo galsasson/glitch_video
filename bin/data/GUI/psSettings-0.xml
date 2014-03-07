@@ -1,27 +1,27 @@
 <Widget>
     <Kind>44</Kind>
     <Name>Particle Chunk</Name>
-    <Value>10</Value>
+    <Value>15</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Particle Size</Name>
-    <Value>10.156250000</Value>
+    <Value>12.500000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Liquid Blur</Name>
-    <Value>3.437500000</Value>
+    <Value>0.729166627</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Blur Alpha</Name>
-    <Value>1.000000000</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Trail Strength</Name>
-    <Value>0.000000000</Value>
+    <Value>0.666666687</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -36,7 +36,7 @@
 <Widget>
     <Kind>44</Kind>
     <Name>Break point</Name>
-    <Value>20</Value>
+    <Value>100</Value>
 </Widget>
 <Widget>
     <Kind>44</Kind>
@@ -46,17 +46,32 @@
 <Widget>
     <Kind>44</Kind>
     <Name>Cure time (frames)</Name>
-    <Value>315</Value>
+    <Value>367</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Background Alpha</Name>
+    <Value>183.281250000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Video Background</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Add SVG Borders</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Density</Name>
-    <Value>0.078125000</Value>
+    <Value>0.250000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Stiffness</Name>
-    <Value>0.562500000</Value>
+    <Value>0.197916672</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -66,15 +81,15 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Buld Viscosity</Name>
-    <Value>1.093750000</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Elasticity</Name>
-    <Value>2.020833254</Value>
+    <Value>2.395833254</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Gravity</Name>
-    <Value>0.126041666</Value>
+    <Value>0.000000000</Value>
 </Widget>
