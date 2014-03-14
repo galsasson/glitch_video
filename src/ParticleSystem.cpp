@@ -158,10 +158,10 @@ void ParticleSystem::draw()
     float blur = tweenBlur.update();
     
     initialFbo.begin();
-    if (videoPlayer.isFrameNew())
-    {
+//    if (videoPlayer.isFrameNew())
+//    {
         drawParticles();
-    }
+//    }
     initialFbo.end();
     
 
@@ -205,9 +205,6 @@ void ParticleSystem::draw()
     
     // draw fluid borders
     //fluidMask.draw();
-    
-    // draw forces
-    drawForces();
     
     ofPopMatrix();
 }
@@ -407,10 +404,10 @@ void ParticleSystem::updateFluid()
     fluid.scaleFactor.y = size.y / fluid.getGridSizeY();
     
     
-//    fluid.bDoMouse = false;
-//    fluid.update();
-    fluid.bDoMouse = true;
-    fluid.update(ofGetMouseX(), ofGetMouseY());
+    fluid.bDoMouse = false;
+    fluid.update();
+//    fluid.bDoMouse = true;
+//    fluid.update(ofGetMouseX(), ofGetMouseY());
     
 }
 
@@ -426,7 +423,7 @@ void ParticleSystem::breakFluid()
     if (!bDoFluid)
     {
         bDoFluid = true;
-        tweenBlur.setParameters(0, tweenBlurEasing, ofxTween::easeOut, 0, liquidBlur, 500, 0);
+        tweenBlur.setParameters(0, tweenBlurEasing, ofxTween::easeOut, 0, liquidBlur, 300, 0);
     }
     
     fluidMask.easeIn();
@@ -476,7 +473,7 @@ void ParticleSystem::startFluidReshape()
     isReshaping = true;
     fluidMask.easeOut();
     tweenReshapeForce.setParameters(0, tweenReshapeEasing, ofxTween::easeIn, maxReshapeForce, 0, 3000, 0);
-    tweenBlur.setParameters(0, tweenBlurEasing, ofxTween::easeIn, liquidBlur, 0, 3000, 0);
+    tweenBlur.setParameters(0, tweenBlurEasing, ofxTween::easeIn, liquidBlur, 0, 300, 0);
 }
 
 float ParticleSystem::getRegionValue(int sx, int sy, int size)

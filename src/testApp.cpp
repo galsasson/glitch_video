@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     ofSetVerticalSync(true);
+    ofSetFrameRate(30);
     
     ps.setup(0, 0, 0, 3840, 1080, "new_assets/00_3840_video_logo_final.mp4", "new_assets/alpha_3840_video_logo_final.svg", "new_assets/alpha_3840_video_logo_final.jpg");
 //    flowInput.listen(10000);

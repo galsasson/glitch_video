@@ -40,7 +40,7 @@ void KinectInput::update()
         // check for motion
         diffImg.absDiff(depthImg, oldDepthImg);
         oldDepthImg = depthImg;
-        if (getAvgBrightness(diffImg, ofRectangle(0, 0, 640, 480)) > motionThresh) {
+        if (getAvgBrightness(diffImg, ofRectangle(motionRectMinX, motionRectMinY, motionRectMaxX, motionRectMaxY)) > motionThresh) {
             isMotion = true;
             cout<<"detected motion"<<endl;
             ps->breakFluid();
@@ -89,28 +89,20 @@ void KinectInput::draw()
     ofPushMatrix();
     ofTranslate(pos.x, pos.y);
     ofScale(size.x/640, size.y/480);
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_ONE_MINUS_DST_ALPHA, GL_ZERO);
-//    glLogicOp(GL_INVERT);
-//    ofEnableBlendMode(OF_BLENDMODE_SUBTRACT);
     glEnable(GL_COLOR_LOGIC_OP);
     glLogicOp(GL_XOR);
     ofSetColor(100, 100, 255, 125);
-//    contourFinder.draw(0, 0);
-//    depthImg.blurHeavily();
     if (isMotion)
     {
         depthImg.blur(7);
         depthImg.draw(0, 0);
     }
-    else {
-//        ofRect(0, 0, 640, 480);
-    }
     glDisable(GL_COLOR_LOGIC_OP);
-//    glBlendFunc(GL_ADD, GL_ONE);
-//    glDisable(GL_COLOR_LOGIC_OP);
     
     ofEnableAlphaBlending();
+    
+//    ofRect(motionRectMinX, motionRectMinY, motionRectMaxX, motionRectMaxY);
+    
     ofPopMatrix();
 
 //    ofSetColor(255);
@@ -202,8 +194,12 @@ void KinectInput::setupGui()
     gui->addSlider("Motion min", 0, 100, &motionThresh);
     obstacleSize = 4;
     gui->addSlider("Obstacle Size", 2, 20, &obstacleSize);
-    
-    
+    motionRectMinX = 0;
+    motionRectMaxX = 640;
+    motionRectMinY = 0;
+    motionRectMaxY = 480;
+    gui->addRangeSlider("Motion width", 0, 640, &motionRectMinX , &motionRectMaxX);
+    gui->addRangeSlider("Motion height", 0, 480, &motionRectMinY, &motionRectMaxY);
     
     loadSettings();
 }

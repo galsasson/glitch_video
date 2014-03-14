@@ -1,7 +1,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Near Threshold</Name>
-    <Value>62.421875000</Value>
+    <Value>90.312500000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -16,7 +16,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>pos.x</Name>
-    <Value>0.000000000</Value>
+    <Value>150.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -46,10 +46,22 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Motion min</Name>
-    <Value>6.770833492</Value>
+    <Value>9.375000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Obstacle Size</Name>
     <Value>7.062500000</Value>
+</Widget>
+<Widget>
+    <Kind>6</Kind>
+    <Name>Motion width</Name>
+    <HighValue>630.000000000</HighValue>
+    <LowValue>70.000007629</LowValue>
+</Widget>
+<Widget>
+    <Kind>6</Kind>
+    <Name>Motion height</Name>
+    <HighValue>275.000000000</HighValue>
+    <LowValue>147.500000000</LowValue>
 </Widget>

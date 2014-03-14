@@ -54,6 +54,14 @@ private:
     float obstacleSize;
     float motionThresh;
     
+    float motionRectMinX;
+    float motionRectMaxX;
+    float motionRectMinY;
+    float motionRectMaxY;
+    
+//    ofRange motionRectHor;
+    ofRectangle motionRectVel;
+    
     bool isMotion;
     
     // GUI
