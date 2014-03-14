@@ -47,7 +47,7 @@ void KinectInput::update()
         }
         else {
             isMotion = false;
-            return;
+//            return;
         }
         
         
@@ -92,16 +92,19 @@ void KinectInput::draw()
     glEnable(GL_COLOR_LOGIC_OP);
     glLogicOp(GL_XOR);
     ofSetColor(100, 100, 255, 125);
-    if (isMotion)
-    {
+//    if (isMotion)
+//    {
         depthImg.blur(7);
         depthImg.draw(0, 0);
-    }
+//    }
     glDisable(GL_COLOR_LOGIC_OP);
     
     ofEnableAlphaBlending();
     
-//    ofRect(motionRectMinX, motionRectMinY, motionRectMaxX, motionRectMaxY);
+    if (bDisplayMotionRect)
+    {
+        ofRect(motionRectMinX, motionRectMinY, motionRectMaxX, motionRectMaxY);
+    }
     
     ofPopMatrix();
 
@@ -194,6 +197,8 @@ void KinectInput::setupGui()
     gui->addSlider("Motion min", 0, 100, &motionThresh);
     obstacleSize = 4;
     gui->addSlider("Obstacle Size", 2, 20, &obstacleSize);
+    bDisplayMotionRect = false;
+    gui->addToggle("Display motion rect", &bDisplayMotionRect);
     motionRectMinX = 0;
     motionRectMaxX = 640;
     motionRectMinY = 0;

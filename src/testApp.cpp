@@ -27,9 +27,7 @@ void testApp::draw()
     ofPushMatrix();
     
     ofScale((float)(ofGetWindowWidth()+20)/3840, (float)(ofGetWindowHeight()+20)/1080);
-//    ofScale((float)(ofGetWindowWidth())/3840, (float)(ofGetWindowHeight())/1080);
     ofTranslate(0, -10);
-//    ofClear(0);
 
     ofPushStyle();
     ps.draw();
@@ -38,7 +36,6 @@ void testApp::draw()
     ofPushStyle();
     kInput->draw();
     ofPopStyle();
-//    flowInput.draw();
     
     if (bDrawFrameRate)
     {

@@ -54,6 +54,7 @@ private:
     float obstacleSize;
     float motionThresh;
     
+    bool bDisplayMotionRect;
     float motionRectMinX;
     float motionRectMaxX;
     float motionRectMinY;
