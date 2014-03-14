@@ -99,7 +99,7 @@ void ParticleSystem::update()
 //    if (fluid.forces && fluid.forces->size() > breakPoint) {
 //        breakFluid();
 //    }
-    breakFluid();
+//    breakFluid();
 
     // update break counters
     if (breakCounter >= 0) {

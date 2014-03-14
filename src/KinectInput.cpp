@@ -8,17 +8,21 @@
 
 #include "KinectInput.h"
 
-KinectInput::KinectInput(ofxMPMFluid* _fluid)
+KinectInput::KinectInput(ParticleSystem* _ps, ofxMPMFluid* _fluid)
 {
+    ps = _ps;
     fluid = _fluid;
     
     kinect.setRegistration(true);
     kinect.init();
     kinect.open();
-    kinect.setCameraTiltAngle(15);
+    kinect.setCameraTiltAngle(-15);
     
     depthImg.allocate(kinect.width, kinect.height);
     oldDepthImg.allocate(kinect.width, kinect.height);
+    diffImg.allocate(kinect.width, kinect.height);
+    
+    isMotion = false;
     
     setupGui();
 }
@@ -32,20 +36,35 @@ void KinectInput::update()
         
         depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
         depthImg.threshold(nearThreshold, CV_THRESH_TOZERO);
+        
+        // check for motion
+        diffImg.absDiff(depthImg, oldDepthImg);
+        oldDepthImg = depthImg;
+        if (getAvgBrightness(diffImg, ofRectangle(0, 0, 640, 480)) > motionThresh) {
+            isMotion = true;
+            cout<<"detected motion"<<endl;
+            ps->breakFluid();
+        }
+        else {
+            isMotion = false;
+            return;
+        }
+        
+        
+        // find current contours
         depthImg.blur(blurAmount);
         depthImg.mirror(false, true);
-        
         contourFinder.findContours(depthImg, contourMin, contourMax, 4, false);
         // now for every blob that we find we will try to locate smaller contours (hands)
         if (contourFinder.nBlobs > 0)
         {
-            for (int i=0; i<contourFinder.nBlobs; i++)
-            {
-                ofRectangle rect = contourFinder.blobs.at(i).boundingRect;
+//            for (int i=0; i<contourFinder.nBlobs; i++)
+//            {
+                ofRectangle rect = contourFinder.blobs.at(0).boundingRect;
                 
                 float maxVal = getMaxBrightness(depthImg, rect);
                 depthImg.threshold(maxVal - handThreshold, CV_THRESH_TOZERO);
-            }
+//            }
         
             // run contour finder again on the new image
             contourFinder.findContours(depthImg, contourMin, contourMax, 4, false);
@@ -57,7 +76,7 @@ void KinectInput::update()
                 bPos /= ofVec2f(640, 480);
                 bPos += pos / size;
                 // normalize values
-                ofxMPMObstacle *obs = new ofxMPMObstacle(bPos.x * fluid->gridSizeX, bPos.y * fluid->gridSizeY, 4);
+                ofxMPMObstacle *obs = new ofxMPMObstacle(bPos.x * fluid->gridSizeX, bPos.y * fluid->gridSizeY, obstacleSize);
                 obstacles.push_back(obs);
                 fluid->addObstacle(obs);
             }
@@ -70,20 +89,35 @@ void KinectInput::draw()
     ofPushMatrix();
     ofTranslate(pos.x, pos.y);
     ofScale(size.x/640, size.y/480);
-    ofEnableBlendMode(OF_BLENDMODE_ADD);
-    ofSetColor(255);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_ONE_MINUS_DST_ALPHA, GL_ZERO);
+//    glLogicOp(GL_INVERT);
+//    ofEnableBlendMode(OF_BLENDMODE_SUBTRACT);
+    glEnable(GL_COLOR_LOGIC_OP);
+    glLogicOp(GL_XOR);
+    ofSetColor(100, 100, 255, 125);
 //    contourFinder.draw(0, 0);
-    depthImg.blurHeavily();
-    depthImg.draw(0, 0);
+//    depthImg.blurHeavily();
+    if (isMotion)
+    {
+        depthImg.blur(7);
+        depthImg.draw(0, 0);
+    }
+    else {
+//        ofRect(0, 0, 640, 480);
+    }
+    glDisable(GL_COLOR_LOGIC_OP);
+//    glBlendFunc(GL_ADD, GL_ONE);
+//    glDisable(GL_COLOR_LOGIC_OP);
     
     ofEnableAlphaBlending();
     ofPopMatrix();
 
-    ofSetColor(255);
-    for (int i=0; i<obstacles.size(); i++)
-    {
-        ofEllipse(obstacles[i]->cx * fluid->scaleFactor.x, obstacles[i]->cy * fluid->scaleFactor.y, 20, 20);
-    }
+//    ofSetColor(255);
+//    for (int i=0; i<obstacles.size(); i++)
+//    {
+//        ofEllipse(obstacles[i]->cx * fluid->scaleFactor.x, obstacles[i]->cy * fluid->scaleFactor.y, 20, 20);
+//    }
     
 }
 
@@ -164,6 +198,10 @@ void KinectInput::setupGui()
     gui->addSlider("Countour Min", 0, 10000, &contourMin);
     contourMax = 50;
     gui->addSlider("Countour Max", 0, 640*480, &contourMax);
+    motionThresh = 30;
+    gui->addSlider("Motion min", 0, 100, &motionThresh);
+    obstacleSize = 4;
+    gui->addSlider("Obstacle Size", 2, 20, &obstacleSize);
     
     
     

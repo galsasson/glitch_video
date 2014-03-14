@@ -10,7 +10,7 @@ void testApp::setup(){
     
     bDrawFrameRate = true;
     
-    kInput = new KinectInput(ps.getFluid());
+    kInput = new KinectInput(&ps, ps.getFluid());
 }
 
 //--------------------------------------------------------------

@@ -4,4 +4,6 @@ bin/data/new_assets
 bin/glitch_videoDebug.app
 bin/glitch_videoRelease.app
 bin/innovid_liquidvideo.app
+bin/innovid_liquidvideoDebug.app
+
 

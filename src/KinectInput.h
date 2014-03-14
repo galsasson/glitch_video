@@ -15,11 +15,12 @@
 #include "ofxOpenCv.h"
 #include "ofxUI.h"
 #include "ofxMPMFluid.h"
+#include "ParticleSystem.h"
 
 class KinectInput
 {
 public:
-    KinectInput(ofxMPMFluid *_fluid);
+    KinectInput(ParticleSystem *ps, ofxMPMFluid *_fluid);
     
     void update();
     void draw();
@@ -35,6 +36,7 @@ public:
     ofxCvContourFinder contourFinder;
     
 private:
+    ParticleSystem *ps;
     ofxMPMFluid *fluid;
     vector<ofxMPMObstacle*> obstacles;
     void clearObstacles();
@@ -49,6 +51,11 @@ private:
     ofVec2f size;
     float contourMin;
     float contourMax;
+    float obstacleSize;
+    float motionThresh;
+    
+    bool isMotion;
+    
     // GUI
     ofxUICanvas *gui;
     void setupGui();
