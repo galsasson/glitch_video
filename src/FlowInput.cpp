@@ -9,9 +9,15 @@
 #include <strings.h>
 #include "FlowInput.h"
 
+//#define USE_BALL
+
 FlowInput::FlowInput()
 {
     setupGui();
+
+#ifdef USE_BALL
+    ball = ofVec2f(0, 0);
+#endif
 }
 
 void FlowInput::listen(int port)
@@ -36,6 +42,9 @@ void FlowInput::update(ofxMPMFluid& fluid)
     }
     
     // update and kill dead forces
+#ifdef USE_BALL
+    ofVec2f avg(0, 0);
+#endif
     for (int i=0; i<forces.size(); i++)
     {
         forces[i]->update();
@@ -46,16 +55,35 @@ void FlowInput::update(ofxMPMFluid& fluid)
             i--;
             delete f;
         }
+#ifdef USE_BALL
+        else {
+            avg += forces[i]->origin;
+        }
+#endif
     }
+#ifdef USE_BALL
+    avg /= forces.size();
     
+    if (forces.size() > 10)
+    {
+        ball += ((avg * fluid.scaleFactor) - ball) * 0.1f;
+        fluid.updateTouch(0, ball);
+    }
+#endif
     //cout<<"forces = "<<forces.size()<<endl;
 }
 
 void FlowInput::draw()
 {
-    for (int i=0; i<forces.size(); i++)
-    {
-    }
+#ifdef USE_BALL
+    ofPushMatrix();
+    ofTranslate(ball);
+    
+    ofSetColor(255);
+    ofEllipse(0, 0, 50, 50);
+    
+    ofPopMatrix();
+#endif
 }
 
 vector<ofxMPMForce*>* FlowInput::getForcesRef()
@@ -70,7 +98,7 @@ void FlowInput::setupGui()
     gui->addWidgetDown(new ofxUILabel("FlowField Input", OFX_UI_FONT_MEDIUM));
     
     maxForces = 100;
-    gui->addIntSlider("Max forces", 1, 500, &maxForces);
+    gui->addIntSlider("Max forces", 1, 1000, &maxForces);
     forceStrength = 1;
     gui->addSlider("Force strength", 0, 2, &forceStrength);
     forceLife = 1;

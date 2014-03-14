@@ -30,7 +30,10 @@ public:
     
     ofxOscReceiver oscRecv;
     vector<ofxMPMForce*> forces;
+
+    ofVec2f ball;
     
+
 private:
     void setupGui();
     

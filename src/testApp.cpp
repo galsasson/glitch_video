@@ -4,31 +4,40 @@
 void testApp::setup(){
     ofSetVerticalSync(true);
     
-//    ps.setup(0, 200, 0, 640/*ofGetWidth()-200*/, 320/*ofGetHeight()*/, "videos/different_pulses.mp4");
-//    ps.setup(0, 0, 0, 1920, 1080, "videos/innovid3.mp4", "svg/innovid4.svg", "alpha/innovid.jpg");
-    ps.setup(0, 0, 0, 3840, 1080, "videos/innovid_fullres.mp4", "svg/innovid_outline_fullres_gal.svg"/*"svg/innovid4.svg"*/, "alpha/innovid_alpha_fullres.gif");
-    flowInput.listen(10000);
-    ps.setFluidForces(flowInput.getForcesRef());
+    ps.setup(0, 0, 0, 3840, 1080, "new_assets/00_3840_video_logo_final.mp4", "new_assets/alpha_3840_video_logo_final.svg", "new_assets/alpha_3840_video_logo_final.jpg");
+//    flowInput.listen(10000);
+//    ps.setFluidForces(flowInput.getForcesRef());
     
     bDrawFrameRate = true;
     
-//    fluidMask.setup(ps.getFluidRef());
+    kInput = new KinectInput(ps.getFluid());
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-    flowInput.update(ps.getFluidRef());
+//    flowInput.update(ps.getFluidRef());
+    kInput->update();
     ps.update();
 }
 
 //--------------------------------------------------------------
 void testApp::draw()
 {
-    ofPushStyle();
+    ofPushMatrix();
+    
+    ofScale((float)(ofGetWindowWidth()+20)/3840, (float)(ofGetWindowHeight()+20)/1080);
+//    ofScale((float)(ofGetWindowWidth())/3840, (float)(ofGetWindowHeight())/1080);
+    ofTranslate(0, -10);
 //    ofClear(0);
 
+    ofPushStyle();
     ps.draw();
-    //flowInput.draw();
+    ofPopStyle();
+    
+    ofPushStyle();
+    kInput->draw();
+    ofPopStyle();
+//    flowInput.draw();
     
     if (bDrawFrameRate)
     {
@@ -39,6 +48,7 @@ void testApp::draw()
     }
     
     ofPopStyle();
+    ofPopMatrix();
 }
 
 //--------------------------------------------------------------
@@ -48,15 +58,18 @@ void testApp::keyPressed(int key){
         case 'g':
             bDrawFrameRate = !bDrawFrameRate;
             ps.toggleSettings();
-            flowInput.toggleSettings();
+            kInput->toggleSettings();
+//            flowInput.toggleSettings();
             break;
         case 'r':
             ps.loadSettings();
-            flowInput.loadSettings();
+            kInput->loadSettings();
+//            flowInput.loadSettings();
             break;
         case 's':
             ps.saveSettings();
-            flowInput.saveSettings();
+            kInput->saveSettings();
+//            flowInput.saveSettings();
             break;
         case 'p':
             ps.backToPlace(false);

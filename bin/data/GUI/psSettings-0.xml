@@ -11,12 +11,12 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Liquid Blur</Name>
-    <Value>0.729166627</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Trail Strength</Name>
-    <Value>0.666666687</Value>
+    <Value>0.500000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -26,32 +26,42 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Max Reshape Force</Name>
-    <Value>0.152083337</Value>
+    <Value>0.075000003</Value>
 </Widget>
 <Widget>
     <Kind>44</Kind>
     <Name>Break point</Name>
-    <Value>74</Value>
+    <Value>45</Value>
 </Widget>
 <Widget>
     <Kind>44</Kind>
     <Name>Break time (frames)</Name>
-    <Value>23</Value>
+    <Value>30</Value>
 </Widget>
 <Widget>
     <Kind>44</Kind>
     <Name>Cure time (frames)</Name>
-    <Value>41</Value>
+    <Value>149</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Draw Shadow</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
-    <Name>Background Alpha</Name>
-    <Value>100.937500000</Value>
+    <Name>Shadow Intensity</Name>
+    <Value>255.000000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>Video Background</Name>
     <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Background Alpha</Name>
+    <Value>26.562500000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

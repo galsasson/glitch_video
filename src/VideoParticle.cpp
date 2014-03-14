@@ -8,13 +8,15 @@
 
 #include "VideoParticle.h"
 
-VideoParticle::VideoParticle(int _id, float x, float y, float z, float s)
+VideoParticle::VideoParticle(int _id, float x, float y, float z, float s, ofVec2f csize)
 {
     id = _id;
     pos = ofVec3f(x, y, z);
     restPos = pos;
     size = s;
     halfSize = s/2;
+    canvasSize = csize;
+    
 }
 
 unsigned int VideoParticle::fillVertices(vector<ofVec3f> &verts, float s, bool randomize)
@@ -124,7 +126,7 @@ void VideoParticle::checkBounds()
         pos.x = 0;
         vel.x *= -1;
     }
-    else if (pos.x > ofGetWidth()) {
+    else if (pos.x > canvasSize.x) {
         pos.x = ofGetWidth();
         vel.x *= -1;
     }
@@ -132,7 +134,7 @@ void VideoParticle::checkBounds()
         pos.y = 0;
         vel.y *= -1;
     }
-    else if (pos.y > ofGetHeight()) {
+    else if (pos.y > canvasSize.y) {
         pos.y = ofGetHeight();
         vel.y *= -1;
     }

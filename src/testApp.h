@@ -7,6 +7,7 @@
 #include "ofxMPMFluid.h"
 #include "ParticleSystem.h"
 #include "FlowInput.h"
+#include "KinectInput.h"
 
 class testApp : public ofBaseApp{
 
@@ -30,7 +31,8 @@ class testApp : public ofBaseApp{
 
 private:
     ParticleSystem ps;
-    FlowInput flowInput;
+//    FlowInput flowInput;
+    KinectInput *kInput;
     
     bool bDrawFrameRate;
  

@@ -1,0 +1,45 @@
+<Widget>
+    <Kind>4</Kind>
+    <Name>Near Threshold</Name>
+    <Value>164.687500000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Hand Threshold</Name>
+    <Value>2.656250000</Value>
+</Widget>
+<Widget>
+    <Kind>44</Kind>
+    <Name>Blur</Name>
+    <Value>19</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>pos.x</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>pos.y</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Width</Name>
+    <Value>3840.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Height</Name>
+    <Value>1071.875000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Countour Min</Name>
+    <Value>104.166671753</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Countour Max</Name>
+    <Value>100800.000000000</Value>
+</Widget>

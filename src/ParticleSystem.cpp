@@ -64,15 +64,6 @@ void ParticleSystem::update()
     verts.reserve(particles.size()*4);
     if (bDoFluid)
     {
-#ifdef NO_FLUID
-        for (int i=0; i<particles.size(); i++)
-        {
-//            particles[i]->handleObstacles(fluid.getObstacles());
-            particles[i]->handleObstacle(ofVec2f(ofGetMouseX(), ofGetMouseY()));
-            particles[i]->update();
-            particles[i]->fillVertices(verts, parPhysSize);
-        }
-#else
         updateFluid();
         vector<ofxMPMParticle*> fParticles = fluid.getParticles();
         
@@ -82,7 +73,6 @@ void ParticleSystem::update()
             particles[i]->update();
             particles[i]->fillVertices(verts, parPhysSize);
         }
-#endif
     }
     else if (isReshaping)
     {
@@ -106,9 +96,10 @@ void ParticleSystem::update()
     }
     vbo.setVertexData(&verts[0], verts.size(), GL_DYNAMIC_DRAW);
     
-    if (fluid.forces->size() > breakPoint) {
-        breakFluid();
-    }
+//    if (fluid.forces && fluid.forces->size() > breakPoint) {
+//        breakFluid();
+//    }
+    breakFluid();
 
     // update break counters
     if (breakCounter >= 0) {
@@ -128,22 +119,28 @@ void ParticleSystem::update()
 
 void ParticleSystem::drawParticles()
 {
-//    if (videoPlayer.getTexture()) {
-        videoPlayer.getTexture()->bind();
-//    }
+    // draw shadow
+    if (isDrawShadow)
+    {
+        ofPushMatrix();
+        ofTranslate(5, 5);
+        ofSetColor(0, shadowIntensity);
+        glDisable(GL_DEPTH_TEST);
+        vbo.drawElements(GL_TRIANGLES, particles.size()*6);
+        ofPopMatrix();
+    }
+    
+    videoPlayer.getTexture()->bind();
     ofEnableAlphaBlending();
     ofSetColor(0, 0, 0, 255 - 255*trailStrength);
     ofRect(0, 0, size.x, size.y);
+    ofSetColor(255);
     glDisable(GL_DEPTH_TEST);
     if (bUseAddMode) {
         ofEnableBlendMode(OF_BLENDMODE_ADD);
     }
-    
     vbo.drawElements(GL_TRIANGLES, particles.size()*6);
-    
-//    if (videoPlayer.getTexture()) {
-        videoPlayer.getTexture()->unbind();
-//    }
+    videoPlayer.getTexture()->unbind();
 }
 
 #define DO_BLUR
@@ -217,9 +214,13 @@ void ParticleSystem::draw()
 
 void ParticleSystem::drawForces()
 {
-    ofSetColor(255, 255, 255);
+    if (!fluid.forces) {
+        return;
+    }
+    
+    ofSetColor(255, 255, 255, 100);
     ofNoFill();
-    ofSetLineWidth(4);
+    ofSetLineWidth(20);
     vector<ofxMPMForce*>* forces = fluid.forces;
     for (int i=0; i<forces->size(); i++)
     {
@@ -282,11 +283,11 @@ void ParticleSystem::initVideoParticles()
                 // create a new particle on the grid
                 float px = x / videoDim.x * size.x;
                 float py = y / videoDim.y * size.y;
-                VideoParticle *vp = new VideoParticle(particles.size(), px, py, 0, parChunk);
+                VideoParticle *vp = new VideoParticle(particles.size(), px, py, 0, parChunk, size);
                 vp->fillVertices(verts, parPhysSize);
                 vp->fillIndices(indices);
                 vp->fillUvs(uvs, ofVec2f(x, y));
-                vp->fillColors(colors, ofFloatColor(1, 1, 1));
+//                vp->fillColors(colors, ofFloatColor(1, 1, 1));
                 particles.push_back(vp);
             }
         }
@@ -294,7 +295,7 @@ void ParticleSystem::initVideoParticles()
     
     vbo.setVertexData(&verts[0], verts.size(), GL_DYNAMIC_DRAW);
     vbo.setTexCoordData(&uvs[0], uvs.size(), GL_STATIC_DRAW);
-    vbo.setColorData(&colors[0], colors.size(), GL_STATIC_DRAW);
+//    vbo.setColorData(&colors[0], colors.size(), GL_STATIC_DRAW);
     vbo.setIndexData(&indices[0], indices.size(), GL_STATIC_DRAW);
     
     cout<<"Initializing fluid["<<id<<"]: number of particles ("<<particles.size()<<")\n";
@@ -342,11 +343,15 @@ void ParticleSystem::setupGui()
     gui->addIntSlider("Break time (frames)", 1, 30, &breakTime);
     cureTime = 120;
     gui->addIntSlider("Cure time (frames)", 1, 1100, &cureTime);
-    
-    backgroundAlpha = 0;
-    gui->addSlider("Background Alpha", 0, 255, &backgroundAlpha);
+
+    isDrawShadow = false;
+    gui->addToggle("Draw Shadow", &isDrawShadow);
+    shadowIntensity = 0;
+    gui->addSlider("Shadow Intensity", 0, 255, &shadowIntensity);
     drawVideoBackground = true;
     gui->addToggle("Video Background", &drawVideoBackground);
+    backgroundAlpha = 0;
+    gui->addSlider("Background Alpha", 0, 255, &backgroundAlpha);
     addSVGBorders = true;
     gui->addToggle("Add SVG Borders", &addSVGBorders);
     
@@ -402,9 +407,10 @@ void ParticleSystem::updateFluid()
     fluid.scaleFactor.y = size.y / fluid.getGridSizeY();
     
     
+//    fluid.bDoMouse = false;
+//    fluid.update();
     fluid.bDoMouse = true;
     fluid.update(ofGetMouseX(), ofGetMouseY());
-//    fluid.update();
     
 }
 
@@ -494,9 +500,9 @@ void ParticleSystem::setFluidForces(vector<ofxMPMForce *> *forces)
     fluid.forces = forces;
 }
 
-ofxMPMFluid& ParticleSystem::getFluidRef()
+ofxMPMFluid* ParticleSystem::getFluid()
 {
-    return fluid;
+    return &fluid;
 }
 
 void ParticleSystem::mousePressed(int x, int y, int button)

@@ -40,7 +40,7 @@ public:
     void resetParticles();
     
     void setFluidForces(vector<ofxMPMForce*>* forces);
-    ofxMPMFluid& getFluidRef();
+    ofxMPMFluid* getFluid();
     
     void mousePressed(int x, int y, int button);
     void mouseDragged(int x, int y, int button);
@@ -89,6 +89,8 @@ private:
     // draw parameters
     bool drawVideoBackground;
     float backgroundAlpha;
+    bool isDrawShadow;
+    float shadowIntensity;
     
     // behaviour parameters
     bool addSVGBorders;
