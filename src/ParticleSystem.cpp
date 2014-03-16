@@ -96,11 +96,6 @@ void ParticleSystem::update()
     }
     vbo.setVertexData(&verts[0], verts.size(), GL_DYNAMIC_DRAW);
     
-//    if (fluid.forces && fluid.forces->size() > breakPoint) {
-//        breakFluid();
-//    }
-//    breakFluid();
-
     // update break counters
     if (breakCounter >= 0) {
         breakCounter--;
@@ -158,10 +153,10 @@ void ParticleSystem::draw()
     float blur = tweenBlur.update();
     
     initialFbo.begin();
-//    if (videoPlayer.isFrameNew())
-//    {
+    if (videoPlayer.isFrameNew())
+    {
         drawParticles();
-//    }
+    }
     initialFbo.end();
     
 
@@ -176,7 +171,7 @@ void ParticleSystem::draw()
     if (drawVideoBackground)
     {
         ofSetColor(255, 255);
-        videoPlayer.draw(-10, -10);
+        videoPlayer.draw(0, 0);
         ofEnableAlphaBlending();
         ofSetColor(0, 255 - backgroundAlpha);             // background alpha here
         ofRect(0, 0, size.x, size.y);
@@ -334,8 +329,6 @@ void ParticleSystem::setupGui()
     gui->addToggle("Add Mode", &bUseAddMode);
     maxReshapeForce = 0.01;
     gui->addSlider("Max Reshape Force", 0, 0.2, &maxReshapeForce);
-    breakPoint = 20;
-    gui->addIntSlider("Break point", 1, 100, &breakPoint);
     breakTime = 2;
     gui->addIntSlider("Break time (frames)", 1, 30, &breakTime);
     cureTime = 120;

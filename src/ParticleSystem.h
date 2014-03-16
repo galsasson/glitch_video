@@ -101,7 +101,6 @@ private:
     float maxReshapeForce;
     ofxTween tweenReshapeForce;
     ofxEasingCubic tweenReshapeEasing;
-    int breakPoint;
     int breakTime, breakCounter;
     int cureTime, cureCounter;
     

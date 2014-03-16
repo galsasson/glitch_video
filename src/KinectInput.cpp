@@ -42,7 +42,7 @@ void KinectInput::update()
         oldDepthImg = depthImg;
         if (getAvgBrightness(diffImg, ofRectangle(motionRectMinX, motionRectMinY, motionRectMaxX, motionRectMaxY)) > motionThresh) {
             isMotion = true;
-            cout<<"detected motion"<<endl;
+//            cout<<"detected motion"<<endl;
             ps->breakFluid();
         }
         else {
