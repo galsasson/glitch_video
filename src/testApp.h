@@ -34,6 +34,11 @@ private:
 //    FlowInput flowInput;
     KinectInput *kInput;
     
+    ofVec2f scale;
+    ofVec2f pos;
+    
+    ofxUICanvas *gui;
+    
     bool bDrawFrameRate;
  
 };

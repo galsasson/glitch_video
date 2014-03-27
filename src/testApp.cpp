@@ -5,6 +5,9 @@ void testApp::setup(){
     ofSetVerticalSync(true);
     ofSetFrameRate(30);
     
+    pos = ofVec2f(0, -10);
+    scale = ofVec2f(1, 1);
+    
     ps.setup(0, 0, 0, 3840, 1080, "new_assets/00_3840_video_logo_final.mp4", "new_assets/alpha_3840_video_logo_final.svg", "new_assets/alpha_3840_video_logo_final.jpg");
 //    flowInput.listen(10000);
 //    ps.setFluidForces(flowInput.getForcesRef());
@@ -26,8 +29,10 @@ void testApp::draw()
 {
     ofPushMatrix();
     
-    ofScale((float)(ofGetWindowWidth()+20)/3840, (float)(ofGetWindowHeight()+20)/1080);
-    ofTranslate(0, -10);
+//    ofScale((float)(ofGetWindowWidth()+20)/3840, (float)(ofGetWindowHeight()+20)/1080);
+//    ofTranslate(0, -10);
+    ofScale(scale.x, scale.y);
+    ofTranslate(pos.x, pos.y);
 
     ofPushStyle();
     ps.draw();
@@ -74,6 +79,30 @@ void testApp::keyPressed(int key){
             break;
         case 'b':
             ps.breakFluid();
+            break;
+        case OF_KEY_UP:
+            pos.y -= 1;
+            break;
+        case OF_KEY_DOWN:
+            pos.y += 1;
+            break;
+        case OF_KEY_LEFT:
+            pos.x -= 1;
+            break;
+        case OF_KEY_RIGHT:
+            pos.x += 1;
+            break;
+        case 'z':
+            scale.x -= 0.005;
+            break;
+        case 'x':
+            scale.x += 0.005;
+            break;
+        case 'c':
+            scale.y -= 0.005;
+            break;
+        case 'v':
+            scale.y += 0.005;
             break;
         default:
             break;
