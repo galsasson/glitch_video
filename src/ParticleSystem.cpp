@@ -199,7 +199,7 @@ void ParticleSystem::draw()
     //        blurVer.draw(0, 0);
     
     // draw fluid borders
-    //fluidMask.draw();
+//    fluidMask.draw();
     
     ofPopMatrix();
 }
@@ -473,6 +473,9 @@ float ParticleSystem::getRegionValue(int sx, int sy, int size)
 {
     int colorVal=0;
     
+    sx *= 2;
+    sy *= 2;
+    
     for (int y=sy; y<sy+size; y++)
     {
         for (int x=sx; x<sx+size; x++)
@@ -480,7 +483,7 @@ float ParticleSystem::getRegionValue(int sx, int sy, int size)
             colorVal += alphaImg.getPixels()[y*alphaImg.width*3 + x*3];
         }
     }
-    
+
     return colorVal / (size*size);
 }
 

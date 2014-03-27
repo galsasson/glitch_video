@@ -30,6 +30,10 @@ class testApp : public ofBaseApp{
 
 
 private:
+    void setupGui();
+    void loadSettings();
+    void saveSettings();
+    
     ParticleSystem ps;
 //    FlowInput flowInput;
     KinectInput *kInput;

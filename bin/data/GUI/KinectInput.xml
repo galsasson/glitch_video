@@ -26,12 +26,12 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Width</Name>
-    <Value>3840.000000000</Value>
+    <Value>1920.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Height</Name>
-    <Value>1071.875000000</Value>
+    <Value>540.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -51,13 +51,18 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Obstacle Size</Name>
-    <Value>7.062500000</Value>
+    <Value>4.156250000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Display motion rect</Name>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>6</Kind>
     <Name>Motion width</Name>
-    <HighValue>630.000000000</HighValue>
-    <LowValue>70.000007629</LowValue>
+    <HighValue>536.666687012</HighValue>
+    <LowValue>50.000000000</LowValue>
 </Widget>
 <Widget>
     <Kind>6</Kind>

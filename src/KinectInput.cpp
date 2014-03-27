@@ -211,12 +211,12 @@ void KinectInput::setupGui()
 
 void KinectInput::loadSettings()
 {
-    gui->loadSettings("KinectInput.xml");
+    gui->loadSettings("GUI/KinectInput.xml");
 }
 
 void KinectInput::saveSettings()
 {
-    gui->saveSettings("KinectInput.xml");
+    gui->saveSettings("GUI/KinectInput.xml");
 }
 
 void KinectInput::toggleSettings()

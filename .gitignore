@@ -1,5 +1,6 @@
 .DS_Store
 bin/data/videos
+bin/data/assets
 bin/data/new_assets
 bin/glitch_videoDebug.app
 bin/glitch_videoRelease.app

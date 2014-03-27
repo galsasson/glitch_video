@@ -18,9 +18,9 @@ void FluidMask::setup(ofxMPMFluid *f, string svgPath)
     fluid = f;
     svg.load(svgPath);
     
-    obstacleSize = 40 / fluid->scaleFactor.x;
+    obstacleSize = 20 / fluid->scaleFactor.x;
     createObstacles(25);
-    tweenSize.setParameters(0, easeQuadSize, ofxTween::easeOut, obstacleSize, obstacleSize, 0, 0);
+//    tweenSize.setParameters(0, easeQuadSize, ofxTween::easeOut, obstacleSize, obstacleSize, 0, 0);
 }
 
 void FluidMask::addObstacle(float x, float y, float rad)
@@ -32,6 +32,8 @@ void FluidMask::addObstacle(float x, float y, float rad)
 
 void FluidMask::update()
 {
+    return;
+    
     float s = tweenSize.update();
     if (s != prevSize)
     {
@@ -48,7 +50,10 @@ void FluidMask::update()
 
 void FluidMask::draw()
 {
+    ofPushMatrix();
+    ofScale(0.5, 0.5);
     svg.draw();
+    ofPopMatrix();
 }
 
 
@@ -87,7 +92,7 @@ void FluidMask::createObstacles(float spacing)
             for (int v=0; v<points.size(); v++)
             {
 //                cout<<"vertex at "<<points[v].x<<"x"<<points[v].y<<endl;
-                addObstacle(points[v].x, points[v].y, obstacleSize);
+                addObstacle(points[v].x/2, points[v].y/2 - 5, obstacleSize);
                 obsNum++;
             }
         }

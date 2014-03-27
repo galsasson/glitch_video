@@ -3,18 +3,18 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     ofSetVerticalSync(true);
-    ofSetFrameRate(30);
+    ofSetFrameRate(60);
     
-    pos = ofVec2f(0, -10);
-    scale = ofVec2f(1, 1);
+    setupGui();
     
-    ps.setup(0, 0, 0, 3840, 1080, "new_assets/00_3840_video_logo_final.mp4", "new_assets/alpha_3840_video_logo_final.svg", "new_assets/alpha_3840_video_logo_final.jpg");
-//    flowInput.listen(10000);
-//    ps.setFluidForces(flowInput.getForcesRef());
-    
-    bDrawFrameRate = true;
+    ps.setup(0, 0, 0, 1920, 540, "assets/00_1920_video_logo_h264.mp4", "assets/alpha_3840_video_logo_final.svg", "assets/alpha_3840_video_logo_final.jpg");
     
     kInput = new KinectInput(&ps, ps.getFluid());
+    
+    bDrawFrameRate = false;
+    gui->toggleVisible();
+    ps.toggleSettings();
+    kInput->toggleSettings();
 }
 
 //--------------------------------------------------------------
@@ -42,16 +42,16 @@ void testApp::draw()
     kInput->draw();
     ofPopStyle();
     
+    ofPopStyle();
+    ofPopMatrix();
+    
     if (bDrawFrameRate)
     {
-        ofSetColor(255);
+        ofSetColor(255, 255, 255, 255);
         char framerate[128];
         sprintf(framerate, "%f", ofGetFrameRate());
         ofDrawBitmapString(framerate, 20, ofGetHeight());
     }
-    
-    ofPopStyle();
-    ofPopMatrix();
 }
 
 //--------------------------------------------------------------
@@ -60,16 +60,19 @@ void testApp::keyPressed(int key){
     {
         case 'g':
             bDrawFrameRate = !bDrawFrameRate;
+            gui->toggleVisible();
             ps.toggleSettings();
             kInput->toggleSettings();
 //            flowInput.toggleSettings();
             break;
         case 'r':
+            loadSettings();
             ps.loadSettings();
             kInput->loadSettings();
 //            flowInput.loadSettings();
             break;
         case 's':
+            saveSettings();
             ps.saveSettings();
             kInput->saveSettings();
 //            flowInput.saveSettings();
@@ -123,6 +126,33 @@ void testApp::keyReleased(int key){
             break;
     }
 }
+
+void testApp::setupGui()
+{
+    gui = new ofxUICanvas(400, 0, 200, ofGetHeight());
+    
+    gui->addWidgetDown(new ofxUILabel("Position", OFX_UI_FONT_MEDIUM));
+    
+    pos.x = -10;
+    gui->addSlider("X", -100, 100, &pos.x);
+    pos.y = 0;
+    gui->addSlider("Y", -100, 100, &pos.y);
+    scale.x = 2;
+    gui->addSlider("Scale width", 1.8, 2.2, &scale.x);
+    scale.y = 2;
+    gui->addSlider("Scale height", 1.8, 2.2, &scale.y);
+}
+
+void testApp::loadSettings()
+{
+    gui->loadSettings("GUI/Position.xml");
+}
+
+void testApp::saveSettings()
+{
+    gui->saveSettings("GUI/Position.xml");
+}
+
 
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
