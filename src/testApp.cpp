@@ -12,7 +12,7 @@ void testApp::setup(){
     kInput = new KinectInput(&ps, ps.getFluid());
     
     bDrawFrameRate = false;
-    gui->toggleVisible();
+    posGui->toggleVisible();
     ps.toggleSettings();
     kInput->toggleSettings();
 }
@@ -60,7 +60,7 @@ void testApp::keyPressed(int key){
     {
         case 'g':
             bDrawFrameRate = !bDrawFrameRate;
-            gui->toggleVisible();
+            posGui->toggleVisible();
             ps.toggleSettings();
             kInput->toggleSettings();
 //            flowInput.toggleSettings();
@@ -129,28 +129,30 @@ void testApp::keyReleased(int key){
 
 void testApp::setupGui()
 {
-    gui = new ofxUICanvas(400, 0, 200, ofGetHeight());
+    posGui = new ofxUICanvas(400, 0, 200, ofGetHeight());
     
-    gui->addWidgetDown(new ofxUILabel("Position", OFX_UI_FONT_MEDIUM));
+    posGui->addWidgetDown(new ofxUILabel("Position", OFX_UI_FONT_MEDIUM));
     
     pos.x = -10;
-    gui->addSlider("X", -100, 100, &pos.x);
+    posGui->addSlider("Main X", -100, 100, &pos.x);
     pos.y = 0;
-    gui->addSlider("Y", -100, 100, &pos.y);
+    posGui->addSlider("Main Y", -100, 100, &pos.y);
     scale.x = 2;
-    gui->addSlider("Scale width", 1.8, 2.2, &scale.x);
+    posGui->addSlider("Main Scale width", 1.8, 2.2, &scale.x);
     scale.y = 2;
-    gui->addSlider("Scale height", 1.8, 2.2, &scale.y);
+    posGui->addSlider("Main Scale height", 1.8, 2.2, &scale.y);
+    
+    loadSettings();
 }
 
 void testApp::loadSettings()
 {
-    gui->loadSettings("GUI/Position.xml");
+    posGui->loadSettings("GUI/Position.xml");
 }
 
 void testApp::saveSettings()
 {
-    gui->saveSettings("GUI/Position.xml");
+    posGui->saveSettings("GUI/Position.xml");
 }
 
 

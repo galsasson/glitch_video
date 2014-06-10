@@ -28,6 +28,7 @@ class testApp : public ofBaseApp{
     
     void exit();
 
+    ofxUICanvas *posGui;
 
 private:
     void setupGui();
@@ -41,7 +42,6 @@ private:
     ofVec2f scale;
     ofVec2f pos;
     
-    ofxUICanvas *gui;
     
     bool bDrawFrameRate;
  
